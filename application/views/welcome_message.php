@@ -1,89 +1,163 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+<div class=" d-flex justify-content-center">
+	<div class="row" id="div-registrar">
+		<div class="">
+			<div class="text-center">
+				<h1>Registrate</h1>
+			</div>
+			<div>
+				<h3>¿Ya estas registrado? <a href="#" onclick="mostrarInicioSesion()">¡Inicia sesion!</a></h3>
+			</div>
+			<form method="post" action="<?= base_url() ?>index.php/Welcome/registrar" id="formulario-registrar">
+				<div class="form-group">
+					<label for="nombres">Nombres</label>
+					<input type="text" class="form-control" id="nombres" aria-describedby="emailHelp" name="nombres">
+				</div>
+				<div class="form-group">
+					<label for="apellidos">Apellidos</label>
+					<input type="text" class="form-control" id="apellidos" aria-describedby="emailHelp" name="apellidos">
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+				</div>
+				<div class="form-group">
+					<label for="password">Contraseña</label>
+					<input type="password" class="form-control" id="passwordRegistrar" name="password">
+				</div>
+				<div class="form-group">
+					<label for="passwordConfirm">Confirmar contraseña</label>
+					<input type="password" class="form-control" id="passwordConfirmRegistrar" name="passwordConfirm">
+				</div>
+				<!-- <div class="form-group">
+					<label for="avatar">Example file input</label>
+					<input type="file" class="form-control-file" id="avatar" accept="image/*" name="avatar">
+				</div> -->
+				<!-- <div class="form-group form-check">
+					<div class="g-recaptcha" data-sitekey="6LfTjqcZAAAAAGoiy59gcEWg6Nk5XF_wwk1b9XI6"></div>
+				</div> -->
+				<button type="submit" class="btn btn-primary">Registrarme</button>
+			</form>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function() {
+			$('#formulario-registrar').on('submit', function(e) { //evento submit
+				e.preventDefault(); //para que no se abra el archivo php
+				$.ajax({ //ajax jQuery
+					type: this.method, //metodo para enviar datos al servidor
+					url: this.action, //url del servidor "archivo php"
+					//contentType : "text/x-json",//prueba para enviarlo como json
+					data: $(this).serialize(), //enviando los datos del "formulario" al servidor
+					success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
+						// let objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
+						console.log(respuesta);
+						if (typeof respuesta === 'string') {
+							let objetoRespuesta = JSON.parse(respuesta);
+							if (objetoRespuesta.status) {
+								console.log(objetoRespuesta.message);
+								document.getElementById("formulario-registrar").reset();
+							} else
+								alert(objetoRespuesta.message)
+						} else
+							console.log("Error inesperado");
+					}
+				});
+			});
+		});
 
-	<style type="text/css">
+		function mostrarInicioSesion() {
+			document.getElementById("div-registrar").style.display = "none";
+			document.getElementById("div-sesion").style.display = "block";
+			document.getElementById("formulario-registrar").reset();
+			document.getElementById("formulario-sesion").reset();
+		}
+	</script>
 
-	::selection { background-color: #E13300; color: white; }
-	::-moz-selection { background-color: #E13300; color: white; }
-
-	body {
-		background-color: #fff;
-		margin: 40px;
-		font: 13px/20px normal Helvetica, Arial, sans-serif;
-		color: #4F5155;
-	}
-
-	a {
-		color: #003399;
-		background-color: transparent;
-		font-weight: normal;
-	}
-
-	h1 {
-		color: #444;
-		background-color: transparent;
-		border-bottom: 1px solid #D0D0D0;
-		font-size: 19px;
-		font-weight: normal;
-		margin: 0 0 14px 0;
-		padding: 14px 15px 10px 15px;
-	}
-
-	code {
-		font-family: Consolas, Monaco, Courier New, Courier, monospace;
-		font-size: 12px;
-		background-color: #f9f9f9;
-		border: 1px solid #D0D0D0;
-		color: #002166;
-		display: block;
-		margin: 14px 0 14px 0;
-		padding: 12px 10px 12px 10px;
-	}
-
-	#body {
-		margin: 0 15px 0 15px;
-	}
-
-	p.footer {
-		text-align: right;
-		font-size: 11px;
-		border-top: 1px solid #D0D0D0;
-		line-height: 32px;
-		padding: 0 10px 0 10px;
-		margin: 20px 0 0 0;
-	}
-
-	#container {
-		margin: 10px;
-		border: 1px solid #D0D0D0;
-		box-shadow: 0 0 8px #D0D0D0;
-	}
-	</style>
-</head>
-<body>
-
-<div id="container">
-	<h1>Welcome to CodeIgniter!</h1>
-
-	<div id="body">
-		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
-
-		<p>If you would like to edit this page you'll find it located at:</p>
-		<code>application/views/welcome_message.php</code>
-
-		<p>The corresponding controller for this page is found at:</p>
-		<code>application/controllers/Welcome.php</code>
-
-		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
+	<div class="row" id="div-correo-enviado" style="display: none">
+		<div class=" text-center">
+			<div class="">
+				<h1>Registrate</h1>
+			</div>
+			<div>
+				<h4>Su cuenta ha sigo crada exitosamente</h4>
+				<h4>Hemos enviado un mensaje a su correo electronico para validar su cuenta.</h4>
+				<h4>Haga clic en el vinculo enviado a su email para activar su cuenta.</h4>
+			</div>
+			<button type="button" class="btn btn-primary" onclick="mostrarRegistrar()">Iniciar sesion</button>
+		</div>
 	</div>
 
-	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
-</div>
+	<div class=" row" id="div-sesion" style="display: none;">
+		<div class="col-10">
+			<div class="text-center">
+				<h1>Inicia sesion</h1>
+			</div>
+			<div>
+				<h3>¿No tienes una cuenta? <a href="#" onclick="mostrarRegistrar()">¡Registrate!</a></h3>
+			</div>
+			<form method="post" action="<?= base_url() ?>index.php/Welcome/login" id="formulario-sesion">
+				<div class="form-group">
+					<label for="email">Email address</label>
+					<input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" name="email">
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="passwordLogin" name="password">
+				</div>
+				<div class="form-group form-check">
+					<input type="checkbox" class="form-check-input" id="checkLogin">
+					<label class="form-check-label" for="checkLogin">Check me out</label>
+				</div>
+				<div class="form-row">
+					<div class="col">
+						<button type="submit" class="btn btn-primary">Iniciar sesion</button>
+					</div>
+					<div class="col">
+						<button type="button" class="btn btn-primary">Recuperar cuenta</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function() {
+			$('#formulario-sesion').on('submit', function(e) { //evento submit
+				e.preventDefault(); 
+				$.ajax({ //ajax jQuery
+					type: this.method, //metodo para enviar datos al servidor
+					url: this.action, //url del servidor "archivo php"
+					//contentType : "text/x-json",//prueba para enviarlo como json
+					data: $(this).serialize(), //enviando los datos del "formulario" al servidor
+					success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
+						//var objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
+						if (typeof respuesta === 'string') {
+							let objetoRespuesta = JSON.parse(respuesta);
+							if (objetoRespuesta.status) {
+								console.log(objetoRespuesta.message);
+								document.getElementById("formulario-sesion").reset();
+								location.href='<?= base_url() ?>index.php/Panel_Administrativo/';
+								// setTimeout("location.href='< ?= base_url() ?>index.php/Panel_Administrativo/'", 1000);
+							} else
+								alert(objetoRespuesta.message)
+						} else
+							console.log("Error inesperado");
+					}
+				});
+			});
+		});
 
-</body>
-</html>
+		/*
+			let perfil = 'admin';
+
+			(perfil != '') ? perfil : 'usuario'
+		*/
+
+		function mostrarRegistrar() {
+			document.getElementById("div-sesion").style.display = "none";
+			document.getElementById("div-registrar").style.display = "block";
+			document.getElementById("div-correo-enviado").style.display = "none";
+			document.getElementById("formulario-registrar").reset();
+			document.getElementById("formulario-sesion").reset();
+		}
+	</script>
+</div>
