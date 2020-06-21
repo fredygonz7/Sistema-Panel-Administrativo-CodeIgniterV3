@@ -25,7 +25,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <!-- <script type="text/javascript" src="< ?=base_url() ?>js/librerias/claajax.js"></script> -->
     <!-- <script type="text/javascript" src="< ?=base_url() ?>js/librerias/clajson.js"></script> -->
     <!-- reCAPTCHA  -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
 </head>
 
 <body>

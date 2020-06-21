@@ -1,17 +1,17 @@
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-3">
             <div class="row">
-                <img src="" class="img-fluid" alt="Responsive image">
+                <img class="img-fluid" alt="Responsive image" src="<?= $this->session->sesion_sistema_administrativo['avatar']; ?>">
             </div>
             <div class="row">
                 <div class="form-row">
-                    <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/descargarPefilt" id="formulario-registrar">
+                    <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/descargarPefilt" id="formulario-descargarPefilt">
                         <div class="col">
                             <button type="submit" class="btn btn-primary">Descargar mi perfil en PDF</button>
                         </div>
                     </form>
-                    <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/enviarPefilt" id="formulario-registrar">
+                    <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/enviarPefilt" id="formulario-enviarPefilt">
                         <div class="col">
                             <button type="submit" class="btn btn-primary">Enviar mi perfil a mi correo</button>
                         </div>
@@ -31,7 +31,7 @@
                     <!-- <form method="post" action="< ?= base_url() ?>index.php/Panel_Administrativo/cerrarSesion" id="formulario-registrar"> -->
                     <button type="button" class="btn btn-primary" onclick="cerrarSesion()">Cerrar Sesion</button>
                     <!-- Button editar perfil modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarPerfilModal">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarPerfilModal" onclick="mostrarDatosFormularioEditar()">
                         Editar Perfil
                     </button>
                     <button type="button" class="btn btn-primary" id="administrarUsuarios" onclick="administrarUsuarios()" style="display:none">Administrar Usuarios</button>
@@ -139,30 +139,29 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nombres">Nombres</label>
-                            <input type="text" class="form-control" id="nombres" aria-describedby="emailHelp" name="nombres">
+                            <input type="text" class="form-control" id="nombresEditarPerfil" aria-describedby="emailHelp" name="nombres">
                         </div>
                         <div class="form-group">
                             <label for="apellidos">Apellidos</label>
-                            <input type="text" class="form-control" id="apellidos" aria-describedby="emailHelp" name="apellidos">
+                            <input type="text" class="form-control" id="apellidosEditarPerfil" aria-describedby="emailHelp" name="apellidos">
                         </div>
                         <div class="form-group">
                             <label for="password">Contraseña</label>
-                            <input type="password" class="form-control" id="passwordRegistrar" name="password">
+                            <input type="password" class="form-control" id="passwordEditarPerfil" name="password">
                         </div>
                         <div class="form-group">
                             <label for="passwordConfirm">Confirmar contraseña</label>
-                            <input type="password" class="form-control" id="passwordConfirmRegistrar" name="passwordConfirm">
+                            <input type="password" class="form-control" id="passwordConfirmEditarPerfil" name="passwordConfirm">
                         </div>
                         <div class="form-group">
-                            <label for="avatar">Example file input</label>
-                            <input type="file" class="form-control-file" id="avatar" accept="image/*" name="avatar">
+                            <label for="avatar">Avatar</label>
+                            <input type="file" class="form-control-file" id="avatarEditarPerfil" accept="image/*" name="avatar" onchange="encodeImageFileAsURL('avatarEditarPerfil');">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -192,20 +191,33 @@
             });
         });
     }
-
     if ("<?= $this->session->sesion_sistema_administrativo['perfil']; ?>" == "admin")
         document.getElementById("administrarUsuarios").style.display = "block";
     else
         document.getElementById("administrarUsuarios").style.display = "none";
 
-
+    var avatarCode = "";
     $(document).ready(function() {
         $('#formulario-editar-perfil').on('submit', function(e) {
             e.preventDefault();
+            let avatar;
+            if (avatarCode == "") {
+                avatar = "<?= $this->session->sesion_sistema_administrativo['avatar']; ?>";
+            } else
+                avatar = avatarCode;
+            data = {
+                nombres: document.getElementById("nombresEditarPerfil").value,
+                apellidos: document.getElementById("apellidosEditarPerfil").value,
+                email: "<?= $this->session->sesion_sistema_administrativo['email']; ?>",
+                password: document.getElementById("passwordEditarPerfil").value,
+                avatar
+            };
+            // console.log(data);
+
             $.ajax({ //ajax jQuery
                 type: this.method,
                 url: this.action,
-                data: $(this).serialize(),
+                data,
                 success: function(respuesta) {
                     // console.log(respuesta);
                     if (typeof respuesta === 'string') {
@@ -213,7 +225,7 @@
                         if (objetoRespuesta.status) {
                             console.log(objetoRespuesta.message);
                             document.getElementById("formulario-editar-perfil").reset();
-                            $('#editarPerfilModal').modal('hide');
+                            location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
                         } else
                             alert(objetoRespuesta.message)
                     } else
@@ -222,4 +234,27 @@
             });
         });
     });
+
+    function encodeImageFileAsURL(id) {
+        // return "1";
+        let filesSelected = document.getElementById(id).files;
+        if (filesSelected.length > 0) {
+            let fileToLoad = filesSelected[0];
+
+            let fileReader = new FileReader();
+
+            fileReader.onload = function(fileLoadedEvent) {
+                srcData = fileLoadedEvent.target.result; // <--- data: base64
+                avatarCode = srcData;
+            }
+            fileReader.readAsDataURL(fileToLoad);
+        }
+    }
+
+    function mostrarDatosFormularioEditar() {
+        document.getElementById("nombresEditarPerfil").value = "<?= $this->session->sesion_sistema_administrativo['nombres']; ?>";
+        document.getElementById("apellidosEditarPerfil").value = "<?= $this->session->sesion_sistema_administrativo['apellidos']; ?>";
+        // let avatar = "< ?= $this->session->sesion_sistema_administrativo['avatar']; ?>";
+        // document.getElementById("avatarEditarPerfil").src = "";
+    }
 </script>

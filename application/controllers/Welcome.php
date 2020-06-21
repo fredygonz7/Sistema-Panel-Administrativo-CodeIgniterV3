@@ -17,9 +17,7 @@ class Welcome extends CI_Controller
 		$this->load->view('include/header');
 		$this->load->view('include/menu');
 
-		if ($sesionIniciada['perfil'] == "admin") {
-			$this->load->view('panel_administrativo/administrador');
-		} else if ($sesionIniciada['perfil'] == "usuario") {
+		if ($sesionIniciada['perfil'] == "admin" || $sesionIniciada['perfil'] == "usuario") {
 			$this->load->view('panel_administrativo/usuario');
 		} else {
 			$this->load->view('welcome_message');
@@ -128,8 +126,8 @@ class Welcome extends CI_Controller
 
 			$this->email->from('fredgonz7@gmail.com', 'Your Name');
 			$this->email->to($email);
-			$this->email->cc('another@another-example.com');
-			$this->email->bcc('them@their-example.com');
+			// $this->email->cc('another@another-example.com');
+			// $this->email->bcc('them@their-example.com');
 
 			$this->email->subject('Email Test');
 			$this->email->message('Testing the email class.');

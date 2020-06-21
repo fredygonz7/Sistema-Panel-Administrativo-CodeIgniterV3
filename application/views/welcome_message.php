@@ -97,11 +97,11 @@
 			</div>
 			<form method="post" action="<?= base_url() ?>index.php/Welcome/login" id="formulario-sesion">
 				<div class="form-group">
-					<label for="email">Email address</label>
+					<label for="email">Email</label>
 					<input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" name="email">
 				</div>
 				<div class="form-group">
-					<label for="password">Password</label>
+					<label for="password">Contraseña</label>
 					<input type="password" class="form-control" id="passwordLogin" name="password">
 				</div>
 				<div class="form-group form-check">

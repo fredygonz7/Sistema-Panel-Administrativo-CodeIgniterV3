@@ -100,6 +100,23 @@ class Usuario_model extends CI_Model
         return $this->mensaje("El usuario ya existe", 0);
     }
 
+
+    public function editarPerfil($array)
+    {
+        $query = $this->db->where('email', $array["email"])->get('usuario')->row();
+        if ($query == null)
+            return $this->mensaje("El usuario ya existe", 0);
+        else {
+            $this->db->where('email', $array["email"]);
+            // $this->db->update('mytable', $data);
+            $editado = $this->db->update("usuario", $array);
+            if (!$editado) {
+                return $this->mensaje("Problemas al editar", 0);
+            } else
+                return $this->mensaje("Usuario editado", 1);
+        }
+    }
+
     /**
      * Function de respuestas
      *

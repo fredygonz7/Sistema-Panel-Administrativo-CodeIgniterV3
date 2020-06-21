@@ -6,9 +6,9 @@ class Panel_Administrativo extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        // $this->load->library('form_validation');
-        // $this->load->helper('form');
-        // $this->load->library('session');
+        $this->load->library('form_validation');
+        $this->load->helper('form');
+        $this->load->library('session');
         // $this->load->model('Usuario_model');
     }
     public function index()
@@ -17,6 +17,8 @@ class Panel_Administrativo extends CI_Controller
         $this->load->view('include/menu');
         $sesionIniciada = $this->session->sesion_sistema_administrativo;
         // print_r($sesionIniciada);die();
+
+        // print_r($this->session);
         if ($sesionIniciada['perfil'] == "admin" || $sesionIniciada['perfil'] == "usuario") {
             $this->load->view('panel_administrativo/usuario');
         }else {
@@ -101,6 +103,7 @@ class Panel_Administrativo extends CI_Controller
 
     public function editarPerfil()
     {
+        // print_r($_POST);
         // validar reglas
         $this->form_validation->set_rules([
             [
@@ -124,17 +127,15 @@ class Panel_Administrativo extends CI_Controller
                 "rules" => "required"
             ],
             [
-                "field" => "activo",
-                "label" => "activo",
-                "rules" => "required"
-            ],
-            [
-                "field" => "perfil",
-                "label" => "perfil",
+                "field" => "avatar",
+                "label" => "avatar",
                 "rules" => "required"
             ]
         ]);
 
+        // print_r($this->session->sesion_sistema_administrativo);
+        // die();
+        
         if ($this->form_validation->run() == FALSE) {
             echo $this->mensaje("Debe revisar los datos");
         } else {
@@ -143,13 +144,31 @@ class Panel_Administrativo extends CI_Controller
                 "apellidos" =>  strtoupper($this->input->post("apellidos")),
                 "email"     =>  strtoupper($this->input->post("email")),
                 "password"  =>  password_hash($_POST['password'], PASSWORD_BCRYPT),
-                "activo"    =>  strtoupper($this->input->post("activo")),
-                "perfil"    =>  strtoupper($this->input->post("perfil"))
+                "avatar"    =>  $this->input->post("avatar")
             );
-            $datos = $this->Usuario_model->registrarUsuario($array);
+            $datos = $this->Usuario_model->editarPerfil($array);
+            if (json_decode($datos)->status){
+                $sesionIniciada = $this->session->sesion_sistema_administrativo;
+                $arraySesion = array(
+                    'sesion_sistema_administrativo' => array(
+                        'id'        => $sesionIniciada['id'],
+                        'nombres'   => strtoupper($this->input->post("nombres")),
+                        'apellidos' => strtoupper($this->input->post("apellidos")),
+                        'email'     => strtoupper($this->input->post("email")),
+                        'avatar'    => $this->input->post("avatar"),
+                        'activo'    => $sesionIniciada['activo'],
+                        'perfil'    => $sesionIniciada['perfil']
+                    )
+                );
+                // $this->session->sesion_sistema_administrativo['avatar']= $this->input->post("avatar");
+                $this->session->unset_userdata('sesion_sistema_administrativo');
+                $this->session->set_userdata($arraySesion);
+                // $this->session->set_userdata('sesion_sistema_administrativo', $arraySesion);
+            }
             echo $datos;
         }
     }
+    
 
     /**
      * Function de respuestas
