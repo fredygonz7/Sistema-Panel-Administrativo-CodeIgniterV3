@@ -1,5 +1,3 @@
-<!-- <div class="container"> -->
-
 <!-- informacion del usuario logueado -->
 <div class="row" id="div-perfil-usuario">
 
@@ -9,119 +7,140 @@
         </div>
         <div class="row justify-content-center">
             <!-- <div class="form-row"> -->
-            <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/descargarPefilt" id="formulario-descargarPefilt">
-                <div class="col">
-                    <button type="submit" class="btn btn-primary">Descargar mi perfil en PDF</button>
-                </div>
-            </form>
-            <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/enviarPefilt" id="formulario-enviarPefilt">
-                <div class="col">
-                    <button type="submit" class="btn btn-primary">Enviar mi perfil a mi correo</button>
-                </div>
-            </form>
+            <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/descargarPefilt" id="formulario-descargarPefilt"> -->
+            <div class="">
+                <button type="submit" class="btn btn-outline-secondary">Descargar mi perfil en PDF</button>
+            </div>
+            <!-- </form> -->
+            <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/enviarPefilt" id="formulario-enviarPefilt"> -->
+            <div class="">
+                <button type="submit" class="btn btn-outline-secondary">Enviar mi perfil a mi correo</button>
+            </div>
+            <!-- </form> -->
             <!-- </div> -->
         </div>
     </div>
     <div class="col-sm-8 col-md-8">
         <div class="row">
-            <div class="col-9">
+            <div class="col">
                 <div class="text-center">
                     <h3><?= $this->session->sesion_sistema_administrativo['nombres'] ?> <?= $this->session->sesion_sistema_administrativo['apellidos']; ?></h3>
                     <h4><?= $this->session->sesion_sistema_administrativo['email']; ?></h4>
                 </div>
             </div>
-            <!-- <div class="col"> -->
-            <!-- <form method="post" action="< ?= base_url() ?>index.php/Panel_Administrativo/cerrarSesion" id="formulario-registrar"> -->
-            <!-- <button type="button" class="btn btn-primary" onclick="cerrarSesion()">Cerrar Sesion</button> -->
-            <!-- Button editar perfil modal -->
-            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarPerfilModal" onclick="mostrarDatosFormularioEditar()">
-                        Editar Perfil
-                    </button>
-                    <button type="button" class="btn btn-primary" id="administrarUsuarios" onclick="administrarUsuarios()" style="display:none">Administrar Usuarios</button> -->
-            <!-- </form> -->
-            <!-- </div> -->
+        </div>
+        <div class="row">
+            <div class="col">
+                <h4>Intereses</h4>
+            </div>
         </div>
         <div class="row">
             <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses" id="formulario-registrar"> -->
+
             <div class="col">
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gastronomia" name="gastronomia">
-                        <label class="form-check-label" for="gastronomia">
-                            Gastronomia
-                        </label>
+                <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarInteres" id="formulario-editar-interes" onchange="this.submit()">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="gastronomia" name="gastronomia">
+                                    <label class="form-check-label" for="gastronomia">
+                                        Gastronomia
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="deportes" name="deportes">
+                                    <label class="form-check-label" for="deportes">
+                                        Deportes
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="desarrolo_web" name="desarrolo_web">
+                                    <label class="form-check-label" for="desarrolo_web">
+                                        Desarrolo web
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="desarrollo_movil" name="desarrollo_movil">
-                        <label class="form-check-label" for="desarrollo_movil">
-                            Desarrollo movil
-                        </label>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="desarrollo_movil" name="desarrollo_movil">
+                                    <label class="form-check-label" for="desarrollo_movil">
+                                        Desarrollo movil
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="politica" name="politica">
+                                    <label class="form-check-label" for="politica">
+                                        Politica
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cine" name="cine">
+                                    <label class="form-check-label" for="cine">
+                                        Cine
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="esoterismo" name="esoterismo">
-                        <label class="form-check-label" for="esoterismo">
-                            Esoterismo
-                        </label>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="esoterismo" name="esoterismo">
+                                    <label class="form-check-label" for="esoterismo">
+                                        Esoterismo
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="hogar_y_moda" name="hogar_y_moda">
+                                    <label class="form-check-label" for="hogar_y_moda">
+                                        Hogar y moda
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="psicologia" name="psicologia">
+                                    <label class="form-check-label" for="psicologia">
+                                        Psicologia
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
-            <div class="col">
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="deportes" name="deportes">
-                        <label class="form-check-label" for="deportes">
-                            Deportes
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="politica" name="politica">
-                        <label class="form-check-label" for="politica">
-                            Politica
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="hogar_y_moda" name="hogar_y_moda">
-                        <label class="form-check-label" for="hogar_y_moda">
-                            Hogar y moda
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="desarrolo_web" name="desarrolo_web">
-                        <label class="form-check-label" for="desarrolo_web">
-                            Desarrolo web
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="cine" name="cine">
-                        <label class="form-check-label" for="cine">
-                            Cine
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="psicologia" name="psicologia">
-                        <label class="form-check-label" for="psicologia">
-                            Psicologia
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <!-- </form> -->
+
         </div>
     </div>
 </div>
@@ -170,7 +189,7 @@
     </div>
 </div>
 
-<!-- Modal editar usuario logeado -->
+<!-- Modal editar usuario accion del admin -->
 <div class="modal fade" id="editarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="editarUsuarioModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -181,7 +200,7 @@
                 </button>
             </div>
 
-            <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarUsuario" id="formulario-editar-usuario">
+            <form method="post" id="formulario-editar-usuario">
 
                 <div class="modal-body">
                     <div class="form-group">
@@ -208,14 +227,16 @@
                         <input type="checkbox" class="form-check-input" id="activoEditarUsuario" name="activo">
                         <label class="form-check-label" for="activo">Activo</label>
                     </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="perfilEditarUsuario" name="perfil">
-                        <label class="form-check-label" for="perfil">Es administrador</label>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="perfilEditarUsuario" name="perfil">
+                            <label class="form-check-label" for="perfil">Es administrador</label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-primary" id="btn-editar-usuario">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -224,21 +245,30 @@
 
 <!-- tabla administrar usuarios -->
 <div id="div-administrar-usuario" style="display: none;">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Perfil</th>
-                <th scope="col">Usuario</th>
-                <th scope="col">Activo</th>
-                <th scope="col">Email</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="tbody-administrar-usuario">
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="">
+            <h3>Administrar Usuarios</h3>
+            <button type="button" class="btn btn-outline-secondary" onclick="crearUsuario_Admin()">Nuevo</button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Perfil</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Activo</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-administrar-usuario">
+            </tbody>
+        </table>
+    </div>
 </div>
 
+<!-- inicio de script -->
 <script>
     // verificar que perfil de usuario esta logeado
     if ("<?= $this->session->sesion_sistema_administrativo['perfil']; ?>" == "admin")
@@ -500,12 +530,30 @@
 
 
     function editarUsuario_Admin(datos) {
-        console.log("enviarEmailUsuario", datos);
+        console.log("editarUsuario_Admin", datos);
+        let formulario = document.getElementById("formulario-editar-usuario");
+        formulario.reset();
+        document.getElementById("editarUsuarioModalLabel").innerHTML = "Editar Usuario";
+        formulario.action = "<?= base_url() ?>index.php/Panel_Administrativo/editarUsuario"
         document.getElementById("nombresEditarUsuario").value = datos.nombres;
         document.getElementById("apellidosEditarUsuario").value = datos.apellidos;
         document.getElementById("emailEditarUsuario").value = datos.email;
         document.getElementById("activoEditarUsuario").checked = (datos.activo == "true" ? true : false)
         document.getElementById("perfilEditarUsuario").checked = (datos.perfil == "true" ? true : false)
+        document.getElementById("btn-editar-usuario").innerText = "Guardar Cambios";
+
+        $('#editarUsuarioModal').modal('show');
+    }
+
+
+    function crearUsuario_Admin() {
+        console.log("crearUsuario_Admin");
+        let formulario = document.getElementById("formulario-editar-usuario");
+        formulario.reset();
+        document.getElementById("editarUsuarioModalLabel").innerHTML = "Crear Usuario";
+        formulario.action = "<?= base_url() ?>index.php/Panel_Administrativo/crerUsuario";
+        document.getElementById("btn-editar-usuario").innerText = "Crear Usuario";
+
         $('#editarUsuarioModal').modal('show');
     }
 
@@ -537,6 +585,7 @@
                     password,
                     activo: document.getElementById("activoEditarUsuario").checked ? "true" : "false",
                     perfil: document.getElementById("perfilEditarUsuario").checked ? "admin" : "usuario",
+                    accion: document.getElementById("editarUsuarioModalLabel").innerHTML
                 };
                 console.log(data);
 
@@ -595,5 +644,5 @@
     }
 
     /****************************************** */
-    administrarUsuarios()
+    administrarUsuarios();
 </script>

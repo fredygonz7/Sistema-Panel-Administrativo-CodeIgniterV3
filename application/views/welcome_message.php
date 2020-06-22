@@ -1,4 +1,4 @@
-<div class=" d-flex justify-content-center">
+<div class="d-flex justify-content-center">
 	<div class="row" id="div-registrar">
 		<div class="">
 			<div class="text-center">
