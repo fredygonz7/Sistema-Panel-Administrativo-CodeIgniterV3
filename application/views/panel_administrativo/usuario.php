@@ -1,25 +1,26 @@
 <!-- <div class="container"> -->
-<div class="row">
-    <div class="col-md-6 col-lg-4">
+<div class="row" id="div-perfil-usuario">
+
+    <div class="col-sm-4 col-md-4">
         <div class="row justify-content-center">
-            <img class="img-fluid" alt="Responsive image" src="<?= $this->session->sesion_sistema_administrativo['avatar']; ?>">
+            <img class="img-fluid" alt="Sin avatar" src="<?= $this->session->sesion_sistema_administrativo['avatar']; ?>">
         </div>
         <div class="row justify-content-center">
             <!-- <div class="form-row"> -->
-                <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/descargarPefilt" id="formulario-descargarPefilt">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary">Descargar mi perfil en PDF</button>
-                    </div>
-                </form>
-                <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/enviarPefilt" id="formulario-enviarPefilt">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary">Enviar mi perfil a mi correo</button>
-                    </div>
-                </form>
+            <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/descargarPefilt" id="formulario-descargarPefilt">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Descargar mi perfil en PDF</button>
+                </div>
+            </form>
+            <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/enviarPefilt" id="formulario-enviarPefilt">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Enviar mi perfil a mi correo</button>
+                </div>
+            </form>
             <!-- </div> -->
         </div>
     </div>
-    <div class="col-md-6 col-lg-8">
+    <div class="col-sm-8 col-md-8">
         <div class="row">
             <div class="col-9">
                 <div class="text-center">
@@ -167,6 +168,21 @@
     </div>
 </div>
 <!-- </div> -->
+<div id="div-administrar-usuario" style="display: none;">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Perfil</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Activo</th>
+                <th scope="col">Email</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tbody-administrar-usuario">
+        </tbody>
+    </table>
+</div>
 
 <script>
     function cerrarSesion() {
@@ -266,10 +282,177 @@
         }
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     function mostrarDatosFormularioEditar() {
         document.getElementById("nombresEditarPerfil").value = "<?= $this->session->sesion_sistema_administrativo['nombres']; ?>";
         document.getElementById("apellidosEditarPerfil").value = "<?= $this->session->sesion_sistema_administrativo['apellidos']; ?>";
         // let avatar = "< ?= $this->session->sesion_sistema_administrativo['avatar']; ?>";
         // document.getElementById("avatarEditarPerfil").src = "";
     }
+
+    /**
+     * muestra la vista de administrar usuarios, con la tabla todos los usuarios 
+     * div de aministrar usuario id= "div-administrar-usuario"
+     * @return void
+     */
+    function administrarUsuarios() {
+        $(document).ready(function() {
+            $.ajax({
+                type: "get",
+                url: '<?= base_url() ?>index.php/Panel_Administrativo/obtenerUsuarios',
+                data: "",
+                success: function(respuesta) {
+                    // console.log("respuesta", respuesta);
+                    if (typeof respuesta === 'string') {
+                        let objetoRespuesta = JSON.parse(respuesta);
+                        if (objetoRespuesta.status) {
+                            // console.log(objetoRespuesta.message);
+                            mostrarDatosDeUsuarios(objetoRespuesta.data);
+                            document.getElementById("div-perfil-usuario").style.display = "none";
+                            document.getElementById("div-administrar-usuario").style.display = "block";
+                            // setTimeout("location.href='< ?= base_url() ?>'", 1000);
+                        } else
+                            alert(objetoRespuesta.message)
+                    } else
+                        console.log("Error inesperado");
+                }
+            });
+        });
+    }
+
+
+    function mostrarDatosDeUsuarios(objetoUsuarios) {
+        // console.log(objetoUsuarios);
+        if (typeof objetoUsuarios == 'object') {
+            let tbody = document.getElementById("tbody-administrar-usuario");
+            while (tbody.hasChildNodes()) {
+                tbody.removeChild(tbody.firstChild);
+            }
+            for (let i = 0; i < objetoUsuarios.length; i++) {
+                if ("<?= $this->session->sesion_sistema_administrativo['email']; ?>" != objetoUsuarios[i].email) {
+                    let fila = document.createElement("tr");
+
+                    let perfil = document.createElement("td");
+                    perfil.appendChild(document.createTextNode(objetoUsuarios[i].perfil));
+                    fila.appendChild(perfil);
+
+                    let usuario = document.createElement("td");
+                    usuario.appendChild(document.createTextNode(objetoUsuarios[i].nombres));
+                    fila.appendChild(usuario);
+
+                    // activo
+                    let activo = document.createElement("td");
+                    let checkbox = document.createElement("input");
+                    checkbox.type = "radio"
+                    if (objetoUsuarios[i].activo == "true")
+                        checkbox.checked = true;
+                    else
+                        checkbox.setAttribute("disabled", "");
+                    activo.appendChild(checkbox);
+                    fila.appendChild(activo);
+
+                    let email = document.createElement("td");
+                    email.appendChild(document.createTextNode(objetoUsuarios[i].email));
+                    fila.appendChild(email);
+
+                    // inicio acciones ******************************
+                    let acciones = document.createElement("td");
+
+                    let enviarEmail = document.createElement("input");
+                    enviarEmail.type = "button"
+                    // a.href = '< ?= base_url() ?>index.php/producto/modificarProducto/?data=' + arrayData;
+                    // a.href = '< ?= base_url() ?>index.php/producto/modificarProducto/?nombre=' + productos[i].nombre + '&precio=' + productos[i].precio;
+
+                    // enviarEmail.appendChild(document.createTextNode("Enviar email"));
+                    enviarEmail.value = "Enviar email";
+
+                    // a.setAttribute("data-producto", productos[i].id);
+                    enviarEmail.onclick = function() {
+                        enviarEmailUsuario(objetoUsuarios[i])
+                    };
+                    // enviarEmail.className = "cursor_pointer";
+                    acciones.appendChild(enviarEmail);
+
+                    let editar = document.createElement("input");
+                    editar.type = "button"
+                    editar.value = "Editar";
+                    editar.onclick = function() {
+                        editarUsuario_Admin(objetoUsuarios[i])
+                    };
+                    acciones.appendChild(editar);
+
+                    let elminar = document.createElement("input");
+                    elminar.type = "button"
+                    elminar.value = "Eliminar";
+                    elminar.onclick = function() {
+                        eliminarUsuario_Admin(objetoUsuarios[i])
+                    };
+                    acciones.appendChild(elminar);
+
+
+                    fila.appendChild(acciones);
+                    // fin acciones *******************************
+
+                    // //agregar evento a la fila
+                    // // fila.setAttribute("data-producto", productos[i].id);
+                    // // fila.onclick = function() {
+                    // //     eventoModificarProducto(this)
+                    // // };
+                    // // fila.className = "pointer";
+
+                    tbody.appendChild(fila);
+                }
+            }
+        }
+    }
+
+
+    function enviarEmailUsuario(datos) {
+        console.log("enviarEmailUsuario", datos);
+
+    }
+
+
+    function editarUsuario_Admin(datos) {
+        console.log("enviarEmailUsuario", datos);
+
+    }
+    
+    /**
+     * Eliminar un usuario,  la session del sistema
+     *  
+     * @param object datos
+     * @return void
+     */
+    function eliminarUsuario_Admin(datos) {
+        if (confirm("Eliminar usuario " + datos.email)) {
+            data = {
+                email: datos.email,
+            };
+            $.ajax({
+                type: "post",
+                url: '<?= base_url() ?>index.php/Panel_Administrativo/eliminarUsuario',
+                data,
+                success: function(respuesta) {
+                    console.log(respuesta);
+                    if (typeof respuesta === 'string') {
+                        let objetoRespuesta = JSON.parse(respuesta);
+                        if (objetoRespuesta.status) {
+                            console.log(objetoRespuesta.message);
+                            administrarUsuarios();
+                        } else
+                            alert(objetoRespuesta.message)
+                    } else
+                        console.log("Error inesperado");
+                }
+            });
+        }
+    }
+
+    /****************************************** */
+    // administrarUsuarios()
 </script>

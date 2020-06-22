@@ -12,7 +12,12 @@ class Usuario_model extends CI_Model
         $this->load->view('include/footer');
     }
 
-    // optener datos de un usuario, es necesario el email del usuario
+    /**
+     * Obtiene datos de un usuario
+     *
+     * @param string $email
+     * @return void
+     */
     public function getUsuario($email)
     {
         $datos = $this->db->where('email', $email)->get('usuario')->row();
@@ -32,13 +37,17 @@ class Usuario_model extends CI_Model
         return ($this->mensaje("Error en alguno de los campos", 0, null, ""));
     }
 
-
+    /**
+     * consulta en la DB todos los usuarios
+     *
+     * @return json
+     */
     public function getUsuarios()
     {
-        $datos = $this->db->get('usuario');
-        // print_r($datos);die();
+        $datos = $this->db->select('id, nombres, apellidos, email, activo, perfil')->get('usuario');
+        // print_r($datos->result());die();
         if ($datos->row()) {
-            return ($this->mensaje("Usuario encontrado", 1, $datos));
+            return ($this->mensaje("Consulta realizada", 1, $datos->result()));
         }
         return ($this->mensaje("Error en alguno de los campos", 0, null, ""));
     }
@@ -59,7 +68,7 @@ class Usuario_model extends CI_Model
     // }
 
     /**
-     * Undocumented function
+     * Valida inicio de sesion de usuario
      *
      * @param string $email
      * @return json
@@ -85,7 +94,12 @@ class Usuario_model extends CI_Model
         return ($this->mensaje("Error en alguno de los campos", 0, null, ""));
     }
 
-
+    /**
+     * registra un usuario 
+     *
+     * @param array $array
+     * @return json
+     */
     public function registrarUsuario($array)
     {
         $query = $this->db->where('email', $array["email"])->get('usuario')->row();
@@ -100,7 +114,12 @@ class Usuario_model extends CI_Model
         return $this->mensaje("El usuario ya existe", 0);
     }
 
-
+    /**
+     * Edita el perfil propio de un usuario
+     *
+     * @param array $array
+     * @return json
+     */
     public function editarPerfil($array)
     {
         $query = $this->db->where('email', $array["email"])->get('usuario')->row();
@@ -117,11 +136,35 @@ class Usuario_model extends CI_Model
         }
     }
 
+
+    /**
+     * Elimina un usuario de la DB
+     *
+     * @param array $array
+     * @return json
+     */
+    public function deleteUsuario($email)
+    {
+        $query = $this->db->where('email', $email)->get('usuario')->row();
+        if ($query == null) {
+            return $this->mensaje("El usuario no existe", 0);
+            
+        } else {
+            $this->db->where('email', $email);
+
+            $eliminado = $this->db->delete("usuario");
+            if (!$eliminado) {
+                return $this->mensaje("Problemas al eliminar", 0);
+            } else
+                return $this->mensaje("Usuario eliminado", 1);
+        }
+    }
+
     /**
      * Function de respuestas
      *
      * @param string $message       mensaje que se puede mostrar al usuario
-     * @param integer $status       0 ó 1 
+     * @param integer $status       debe ser el numero 0 o el numero 1 
      *                              0 para indicar error o respues negativa (false)
      *                              1 para indicar ok o respues positiva (true)
      * @param [type] $data

@@ -51,7 +51,7 @@
 	</div>
 
 	<div class=" row" id="div-sesion" style="display: none;">
-		<div class="col-10">
+		<div class="">
 			<div class="text-center">
 				<h1>Inicia sesion</h1>
 			</div>
