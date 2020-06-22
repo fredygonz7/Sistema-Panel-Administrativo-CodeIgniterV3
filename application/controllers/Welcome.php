@@ -28,6 +28,7 @@ class Welcome extends CI_Controller
 			$this->load->view('include/footer');
 		}
 	}
+
 	/**
 	 * Undocumented function
 	 *
@@ -57,11 +58,6 @@ class Welcome extends CI_Controller
 			$datos = $this->Usuario_model->validarUsuario(strtoupper($_POST['email']));
 			$objetoUsuario = json_decode($datos);
 			
-			// print_r($datos); die();
-
-			// $this->session->userdata('item');
-			// print_r(json_decode($datos)->data);
-			// die();
 			if ($objetoUsuario->status){
 				$arraySesion= array(
 					'sesion_sistema_administrativo' => get_object_vars($objetoUsuario->data )

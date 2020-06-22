@@ -43,10 +43,8 @@ class Panel_Administrativo extends CI_Controller
      */
     public function cerrarSesion()
     {
-        // $array_items = array('id','nombres','apellidos','email','avatar','activo','perfil');
         $this->session->unset_userdata('sesion_sistema_administrativo');
         echo $this->mensaje("Sesion cerrada", 1);
-        // $this->index();
     }
 
     /**
@@ -59,17 +57,6 @@ class Panel_Administrativo extends CI_Controller
         $datos = $this->Usuario_model->getUsuarios();
         echo $datos;
     }
-
-    /**
-     * Undocumented function
-     *
-     * @return mensaje con de usuario
-     */
-    // public function obtenerUsuario()
-    // {
-    //     $datos = $this->Usuario_model->getUsuario();
-    //     echo $datos;
-    // }
 
     /**
      * Registra un usuario
@@ -197,6 +184,71 @@ class Panel_Administrativo extends CI_Controller
                 $this->session->unset_userdata('sesion_sistema_administrativo');
                 $this->session->set_userdata($arraySesion);
             }
+            echo $datos;
+        }
+    }
+
+
+    /**
+     * Cominica los datos de editar usuario con el modelo que actualiza los datos de un usuario
+     * accion que puede realizar un adminitrador
+     *
+     * @return void
+     */
+    public function editarUsuario()
+    {
+        // print_r($_POST);
+        // die();
+        // validar reglas
+        $this->form_validation->set_rules([
+            [
+                "field" => "nombres",
+                "label" => "nombres",
+                "rules" => "required"
+            ],
+            [
+                "field" => "apellidos",
+                "label" => "apellidos",
+                "rules" => "required"
+            ],
+            [
+                "field" => "email",
+                "label" => "email",
+                "rules" => "required"
+            ],
+            [
+                "field" => "activo",
+                "label" => "activo",
+                "rules" => "required"
+            ],
+            [
+                "field" => "perfil",
+                "label" => "perfil",
+                "rules" => "required"
+            ]
+        ]);
+        if ($this->form_validation->run() == FALSE) {
+            echo $this->mensaje("Debe revisar los datos");
+        } else {
+            $array = array(
+                "nombres"   =>  strtoupper($this->input->post("nombres")),
+                "apellidos" =>  strtoupper($this->input->post("apellidos")),
+                "email"     =>  strtoupper($this->input->post("email")),
+                "activo"    =>  $this->input->post("activo"),
+                "perfil"    =>  $this->input->post("perfil")
+            );
+
+            $this->form_validation->set_rules([
+                [
+                    "field" => "password",
+                    "label" => "password",
+                    "rules" => "required"
+                ]
+            ]);
+            if ($this->form_validation->run() == TRUE) {
+                $array["password"] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+            }
+            $datos = $this->Usuario_model->editarPerfil($array);
             echo $datos;
         }
     }

@@ -1,4 +1,6 @@
 <!-- <div class="container"> -->
+
+<!-- informacion del usuario logueado -->
 <div class="row" id="div-perfil-usuario">
 
     <div class="col-sm-4 col-md-4">
@@ -124,7 +126,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal editar usuario logeado -->
 <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPefilModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -167,7 +169,60 @@
         </div>
     </div>
 </div>
-<!-- </div> -->
+
+<!-- Modal editar usuario logeado -->
+<div class="modal fade" id="editarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="editarUsuarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarUsuarioModalLabel">Editar Perfil</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarUsuario" id="formulario-editar-usuario">
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nombres">Nombres</label>
+                        <input type="text" class="form-control" id="nombresEditarUsuario" name="nombres">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidosEditarUsuario" name="apellidos">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo</label>
+                        <input type="text" class="form-control" id="emailEditarUsuario" aria-describedby="emailHelp" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="passwordEditarUsuario" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordConfirm">Confirmar contraseña</label>
+                        <input type="password" class="form-control" id="passwordConfirmEditarUsuario" name="passwordConfirm">
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="activoEditarUsuario" name="activo">
+                        <label class="form-check-label" for="activo">Activo</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="perfilEditarUsuario" name="perfil">
+                        <label class="form-check-label" for="perfil">Es administrador</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- tabla administrar usuarios -->
 <div id="div-administrar-usuario" style="display: none;">
     <table class="table table-striped">
         <thead class="thead-dark">
@@ -185,35 +240,50 @@
 </div>
 
 <script>
-    function cerrarSesion() {
-        $(document).ready(function() {
-            $.ajax({ //ajax jQuery
-                type: "get",
-                url: '<?= base_url() ?>index.php/Panel_Administrativo/cerrarSesion',
-                data: "",
-                success: function(respuesta) {
-                    // console.log("respuesta", respuesta);
-
-                    if (typeof respuesta === 'string') {
-                        let objetoRespuesta = JSON.parse(respuesta);
-                        if (objetoRespuesta.status) {
-                            // console.log(objetoRespuesta.message);
-                            setTimeout("location.href='<?= base_url() ?>'", 1000);
-                        } else
-                            alert(objetoRespuesta.message)
-                    } else
-                        console.log("Error inesperado");
-                }
-            });
-        });
-    }
+    // verificar que perfil de usuario esta logeado
     if ("<?= $this->session->sesion_sistema_administrativo['perfil']; ?>" == "admin")
         document.getElementById("administrarUsuarios").style.display = "block";
     else
         document.getElementById("administrarUsuarios").style.display = "none";
 
+    /**
+     * cierra la sesion
+     *
+     * @return void
+     */
+
+    function cerrarSesion() {
+        if (confirm("Cerrar sesion ")) {
+            $(document).ready(function() {
+                $.ajax({ //ajax jQuery
+                    type: "get",
+                    url: '<?= base_url() ?>index.php/Panel_Administrativo/cerrarSesion',
+                    data: "",
+                    success: function(respuesta) {
+                        // console.log("respuesta", respuesta);
+
+                        if (typeof respuesta === 'string') {
+                            let objetoRespuesta = JSON.parse(respuesta);
+                            if (objetoRespuesta.status) {
+                                // console.log(objetoRespuesta.message);
+                                setTimeout("location.href='<?= base_url() ?>'", 1000);
+                            } else
+                                alert(objetoRespuesta.message)
+                        } else
+                            console.log("Error inesperado");
+                    }
+                });
+            });
+        }
+    }
+
     // avatarCode - almacena la imagen en formato texto base64
     var avatarCode = "";
+
+    /**
+     * #formulario-editar-perfil
+     * edita el perfil del usuario actual
+     */
     $(document).ready(function() {
         $('#formulario-editar-perfil').on('submit', function(e) {
             e.preventDefault();
@@ -266,6 +336,12 @@
         });
     });
 
+    /**
+     * Codifica la imagen a texto base64
+     * 
+     * @param string id
+     * @return void
+     */
     function encodeImageFileAsURL(id) {
         // return "1";
         let filesSelected = document.getElementById(id).files;
@@ -283,7 +359,7 @@
     }
 
     /**
-     * Undocumented function
+     * muestra en formurario de editar datos del usuario
      *
      * @return void
      */
@@ -297,6 +373,7 @@
     /**
      * muestra la vista de administrar usuarios, con la tabla todos los usuarios 
      * div de aministrar usuario id= "div-administrar-usuario"
+     * 
      * @return void
      */
     function administrarUsuarios() {
@@ -311,7 +388,7 @@
                         let objetoRespuesta = JSON.parse(respuesta);
                         if (objetoRespuesta.status) {
                             // console.log(objetoRespuesta.message);
-                            mostrarDatosDeUsuarios(objetoRespuesta.data);
+                            mostrarDatosDeAdministrarUsuarios(objetoRespuesta.data);
                             document.getElementById("div-perfil-usuario").style.display = "none";
                             document.getElementById("div-administrar-usuario").style.display = "block";
                             // setTimeout("location.href='< ?= base_url() ?>'", 1000);
@@ -324,8 +401,13 @@
         });
     }
 
-
-    function mostrarDatosDeUsuarios(objetoUsuarios) {
+    /**
+     * muestra la interfaz de administrar usuarios 
+     * la tabla con los usuarios registrados, menos el usuario logeado 
+     *
+     * @return void
+     */
+    function mostrarDatosDeAdministrarUsuarios(objetoUsuarios) {
         // console.log(objetoUsuarios);
         if (typeof objetoUsuarios == 'object') {
             let tbody = document.getElementById("tbody-administrar-usuario");
@@ -341,18 +423,18 @@
                     fila.appendChild(perfil);
 
                     let usuario = document.createElement("td");
-                    usuario.appendChild(document.createTextNode(objetoUsuarios[i].nombres));
+                    usuario.appendChild(document.createTextNode(objetoUsuarios[i].nombres + " " + objetoUsuarios[i].apellidos));
                     fila.appendChild(usuario);
 
                     // activo
                     let activo = document.createElement("td");
-                    let checkbox = document.createElement("input");
-                    checkbox.type = "radio"
+                    let inputActivo = document.createElement("input");
+                    inputActivo.type = "radio"
                     if (objetoUsuarios[i].activo == "true")
-                        checkbox.checked = true;
+                        inputActivo.checked = true;
                     else
-                        checkbox.setAttribute("disabled", "");
-                    activo.appendChild(checkbox);
+                        inputActivo.setAttribute("disabled", "");
+                    activo.appendChild(inputActivo);
                     fila.appendChild(activo);
 
                     let email = document.createElement("td");
@@ -419,9 +501,68 @@
 
     function editarUsuario_Admin(datos) {
         console.log("enviarEmailUsuario", datos);
-
+        document.getElementById("nombresEditarUsuario").value = datos.nombres;
+        document.getElementById("apellidosEditarUsuario").value = datos.apellidos;
+        document.getElementById("emailEditarUsuario").value = datos.email;
+        document.getElementById("activoEditarUsuario").checked = (datos.activo == "true" ? true : false)
+        document.getElementById("perfilEditarUsuario").checked = (datos.perfil == "true" ? true : false)
+        $('#editarUsuarioModal').modal('show');
     }
-    
+
+    /**
+     * #formulario-editar-usuario
+     * edita el perfil de un usuario accion que realiza un admin
+     */
+    $(document).ready(function() {
+        $('#formulario-editar-usuario').on('submit', function(e) {
+            e.preventDefault();
+            console.log("formulario-editar-usuario");
+
+            let password = "";
+            if ((document.getElementById("passwordEditarUsuario").value) != (document.getElementById("passwordConfirmEditarUsuario").value)) {
+                alert("Las contraseñas no coinciden");
+            } else {
+                if (document.getElementById("passwordEditarUsuario").value == "" || document.getElementById("passwordConfirmEditarUsuario").value == "") {
+                    password = "";
+                } else if (document.getElementById("passwordEditarUsuario").value === document.getElementById("passwordConfirmEditarUsuario").value) {
+                    password = document.getElementById("passwordEditarUsuario").value;
+                } else {
+                    password = "";
+                }
+
+                data = {
+                    nombres: document.getElementById("nombresEditarUsuario").value,
+                    apellidos: document.getElementById("apellidosEditarUsuario").value,
+                    email: document.getElementById("emailEditarUsuario").value,
+                    password,
+                    activo: document.getElementById("activoEditarUsuario").checked ? "true" : "false",
+                    perfil: document.getElementById("perfilEditarUsuario").checked ? "admin" : "usuario",
+                };
+                console.log(data);
+
+                $.ajax({ //ajax jQuery
+                    type: this.method,
+                    url: this.action,
+                    data,
+                    success: function(respuesta) {
+                        // console.log(respuesta);
+                        if (typeof respuesta === 'string') {
+                            let objetoRespuesta = JSON.parse(respuesta);
+                            if (objetoRespuesta.status) {
+                                console.log(objetoRespuesta.message);
+                                document.getElementById("formulario-editar-usuario").reset();
+                                $('#editarUsuarioModal').modal('hide');
+                                administrarUsuarios();
+                            } else
+                                alert(objetoRespuesta.message)
+                        } else
+                            console.log("Error inesperado");
+                    }
+                });
+            }
+        });
+    });
+
     /**
      * Eliminar un usuario,  la session del sistema
      *  
@@ -454,5 +595,5 @@
     }
 
     /****************************************** */
-    // administrarUsuarios()
+    administrarUsuarios()
 </script>

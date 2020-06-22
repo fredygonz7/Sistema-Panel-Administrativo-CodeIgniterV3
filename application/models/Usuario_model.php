@@ -124,7 +124,7 @@ class Usuario_model extends CI_Model
     {
         $query = $this->db->where('email', $array["email"])->get('usuario')->row();
         if ($query == null)
-            return $this->mensaje("El usuario ya existe", 0);
+            return $this->mensaje("El usuario no existe", 0);
         else {
             $this->db->where('email', $array["email"]);
             // $this->db->update('mytable', $data);
