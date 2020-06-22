@@ -14,14 +14,14 @@ class Panel_Administrativo extends CI_Controller
     public function index()
     {
         $this->load->view('include/header');
-        $this->load->view('include/menu');
+        $this->load->view('include/menu_panel');
         $sesionIniciada = $this->session->sesion_sistema_administrativo;
         // print_r($sesionIniciada);die();
 
         // print_r($this->session);
         if ($sesionIniciada['perfil'] == "admin" || $sesionIniciada['perfil'] == "usuario") {
             $this->load->view('panel_administrativo/usuario');
-        }else {
+        } else {
             $this->load->view('welcome_message');
         }
         $this->load->view('include/footer');
@@ -32,7 +32,7 @@ class Panel_Administrativo extends CI_Controller
     {
         // $array_items = array('id','nombres','apellidos','email','avatar','activo','perfil');
         $this->session->unset_userdata('sesion_sistema_administrativo');
-        echo $this->mensaje("Sesion cerrada",1);
+        echo $this->mensaje("Sesion cerrada", 1);
         // $this->index();
     }
 
@@ -104,6 +104,7 @@ class Panel_Administrativo extends CI_Controller
     public function editarPerfil()
     {
         // print_r($_POST);
+        // die();
         // validar reglas
         $this->form_validation->set_rules([
             [
@@ -122,11 +123,6 @@ class Panel_Administrativo extends CI_Controller
                 "rules" => "required"
             ],
             [
-                "field" => "password",
-                "label" => "password",
-                "rules" => "required"
-            ],
-            [
                 "field" => "avatar",
                 "label" => "avatar",
                 "rules" => "required"
@@ -135,7 +131,7 @@ class Panel_Administrativo extends CI_Controller
 
         // print_r($this->session->sesion_sistema_administrativo);
         // die();
-        
+
         if ($this->form_validation->run() == FALSE) {
             echo $this->mensaje("Debe revisar los datos");
         } else {
@@ -143,11 +139,25 @@ class Panel_Administrativo extends CI_Controller
                 "nombres"   =>  strtoupper($this->input->post("nombres")),
                 "apellidos" =>  strtoupper($this->input->post("apellidos")),
                 "email"     =>  strtoupper($this->input->post("email")),
-                "password"  =>  password_hash($_POST['password'], PASSWORD_BCRYPT),
+                // "password"  =>  password_hash($_POST['password'], PASSWORD_BCRYPT),
                 "avatar"    =>  $this->input->post("avatar")
             );
+
+            $this->form_validation->set_rules([
+                [
+                    "field" => "password",
+                    "label" => "password",
+                    "rules" => "required"
+                ]
+            ]);
+            if ($this->form_validation->run() == TRUE) {
+                $array["password"]= password_hash($_POST['password'], PASSWORD_BCRYPT);
+            }
+            // print_r($array);
+            // die();
+
             $datos = $this->Usuario_model->editarPerfil($array);
-            if (json_decode($datos)->status){
+            if (json_decode($datos)->status) {
                 $sesionIniciada = $this->session->sesion_sistema_administrativo;
                 $arraySesion = array(
                     'sesion_sistema_administrativo' => array(
@@ -168,7 +178,7 @@ class Panel_Administrativo extends CI_Controller
             echo $datos;
         }
     }
-    
+
 
     /**
      * Function de respuestas

@@ -28,10 +28,6 @@
 					<label for="passwordConfirm">Confirmar contraseña</label>
 					<input type="password" class="form-control" id="passwordConfirmRegistrar" name="passwordConfirm">
 				</div>
-				<!-- <div class="form-group">
-					<label for="avatar">Example file input</label>
-					<input type="file" class="form-control-file" id="avatar" accept="image/*" name="avatar">
-				</div> -->
 				<!-- <div class="form-group form-check">
 					<div class="g-recaptcha" data-sitekey="6LfTjqcZAAAAAGoiy59gcEWg6Nk5XF_wwk1b9XI6"></div>
 				</div> -->
@@ -39,39 +35,6 @@
 			</form>
 		</div>
 	</div>
-	<script>
-		$(document).ready(function() {
-			$('#formulario-registrar').on('submit', function(e) { //evento submit
-				e.preventDefault(); //para que no se abra el archivo php
-				$.ajax({ //ajax jQuery
-					type: this.method, //metodo para enviar datos al servidor
-					url: this.action, //url del servidor "archivo php"
-					//contentType : "text/x-json",//prueba para enviarlo como json
-					data: $(this).serialize(), //enviando los datos del "formulario" al servidor
-					success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
-						// let objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
-						console.log(respuesta);
-						if (typeof respuesta === 'string') {
-							let objetoRespuesta = JSON.parse(respuesta);
-							if (objetoRespuesta.status) {
-								console.log(objetoRespuesta.message);
-								document.getElementById("formulario-registrar").reset();
-							} else
-								alert(objetoRespuesta.message)
-						} else
-							console.log("Error inesperado");
-					}
-				});
-			});
-		});
-
-		function mostrarInicioSesion() {
-			document.getElementById("div-registrar").style.display = "none";
-			document.getElementById("div-sesion").style.display = "block";
-			document.getElementById("formulario-registrar").reset();
-			document.getElementById("formulario-sesion").reset();
-		}
-	</script>
 
 	<div class="row" id="div-correo-enviado" style="display: none">
 		<div class=" text-center">
@@ -121,8 +84,49 @@
 	</div>
 	<script>
 		$(document).ready(function() {
+			$('#formulario-registrar').on('submit', function(e) { //evento submit
+				e.preventDefault(); //para que no se abra el archivo php
+				if (document.getElementById("passwordRegistrar").value === document.getElementById("passwordConfirmRegistrar").value) {
+					$.ajax({ //ajax jQuery
+						type: this.method, //metodo para enviar datos al servidor
+						url: this.action, //url del servidor "archivo php"
+						//contentType : "text/x-json",//prueba para enviarlo como json
+						data: $(this).serialize(), //enviando los datos del "formulario" al servidor
+						success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
+							// let objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
+							console.log(respuesta);
+							if (typeof respuesta === 'string') {
+								let objetoRespuesta = JSON.parse(respuesta);
+								if (objetoRespuesta.status) {
+									console.log(objetoRespuesta.message);
+									document.getElementById("formulario-registrar").reset();
+								} else
+									alert(objetoRespuesta.message)
+							} else
+								console.log("Error inesperado");
+						}
+					});
+				}else{
+					alert("las contraseñas no coinciden")
+				}
+			});
+		});
+
+		/**
+		 * Funcion encargada de moestrar el formulario de inicio de sesion y ocultar los demas
+		 *
+		 * @return void
+		 */
+		function mostrarInicioSesion() {
+			document.getElementById("div-registrar").style.display = "none";
+			document.getElementById("div-sesion").style.display = "block";
+			document.getElementById("formulario-registrar").reset();
+			document.getElementById("formulario-sesion").reset();
+		}
+
+		$(document).ready(function() {
 			$('#formulario-sesion').on('submit', function(e) { //evento submit
-				e.preventDefault(); 
+				e.preventDefault();
 				$.ajax({ //ajax jQuery
 					type: this.method, //metodo para enviar datos al servidor
 					url: this.action, //url del servidor "archivo php"
@@ -135,7 +139,7 @@
 							if (objetoRespuesta.status) {
 								console.log(objetoRespuesta.message);
 								document.getElementById("formulario-sesion").reset();
-								location.href='<?= base_url() ?>index.php/Panel_Administrativo/';
+								location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
 								// setTimeout("location.href='< ?= base_url() ?>index.php/Panel_Administrativo/'", 1000);
 							} else
 								alert(objetoRespuesta.message)
@@ -146,12 +150,11 @@
 			});
 		});
 
-		/*
-			let perfil = 'admin';
-
-			(perfil != '') ? perfil : 'usuario'
-		*/
-
+		/**
+		 * Funcion encargada de mostrar el formulario de registrar y ocultar los otros
+		 *
+		 * @return void
+		 */
 		function mostrarRegistrar() {
 			document.getElementById("div-sesion").style.display = "none";
 			document.getElementById("div-registrar").style.display = "block";
