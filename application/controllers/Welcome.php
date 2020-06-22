@@ -74,12 +74,12 @@ class Welcome extends CI_Controller
 	public function registrar()
 	{
 		
-		print_r($_POST);
+		// print_r($_POST);
 		// $captcha = $_POST['g-recaptcha-response'];
 		// $captcha_clave_secreta = '6LfTjqcZAAAAAI426GOq5mdrqmgZu5C-gACNFPvS';
 		// $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=". $captcha_clave_secreta."&response=" . $captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
 
-		die();
+		// die();
 		// validar reglas
 		$this->form_validation->set_rules([
 			[
