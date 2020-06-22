@@ -551,7 +551,7 @@
         let formulario = document.getElementById("formulario-editar-usuario");
         formulario.reset();
         document.getElementById("editarUsuarioModalLabel").innerHTML = "Crear Usuario";
-        formulario.action = "<?= base_url() ?>index.php/Panel_Administrativo/crerUsuario";
+        formulario.action = "<?= base_url() ?>index.php/Panel_Administrativo/crearUsuario";
         document.getElementById("btn-editar-usuario").innerText = "Crear Usuario";
 
         $('#editarUsuarioModal').modal('show');
@@ -584,8 +584,8 @@
                     email: document.getElementById("emailEditarUsuario").value,
                     password,
                     activo: document.getElementById("activoEditarUsuario").checked ? "true" : "false",
-                    perfil: document.getElementById("perfilEditarUsuario").checked ? "admin" : "usuario",
-                    accion: document.getElementById("editarUsuarioModalLabel").innerHTML
+                    perfil: document.getElementById("perfilEditarUsuario").checked ? "admin" : "usuario"
+                    // ,accion: document.getElementById("editarUsuarioModalLabel").innerHTML
                 };
                 console.log(data);
 

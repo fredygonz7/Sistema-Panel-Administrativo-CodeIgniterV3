@@ -64,7 +64,7 @@ class Panel_Administrativo extends CI_Controller
      *
      * @return json
      */
-    public function registrarUsuario()
+    public function crearUsuario()
     {
         // validar reglas
         $this->form_validation->set_rules([
@@ -99,17 +99,17 @@ class Panel_Administrativo extends CI_Controller
                 "rules" => "required"
             ]
         ]);
-
+        
         if ($this->form_validation->run() == FALSE) {
-            echo $this->mensaje("Debe revisar los datos");
+            echo $this->mensaje("Datos incompletos");
         } else {
             $array = array(
                 "nombres"   =>  strtoupper($this->input->post("nombres")),
                 "apellidos" =>  strtoupper($this->input->post("apellidos")),
                 "email"     =>  strtoupper($this->input->post("email")),
                 "password"  =>  password_hash($_POST['password'], PASSWORD_BCRYPT),
-                "activo"    =>  strtoupper($this->input->post("activo")),
-                "perfil"    =>  strtoupper($this->input->post("perfil"))
+                "activo"    =>  $this->input->post("activo"),
+                "perfil"    =>  $this->input->post("perfil")
             );
             $datos = $this->Usuario_model->registrarUsuario($array);
             echo $datos;
@@ -147,7 +147,7 @@ class Panel_Administrativo extends CI_Controller
             ]
         ]);
         if ($this->form_validation->run() == FALSE) {
-            echo $this->mensaje("Debe revisar los datos");
+            echo $this->mensaje("Datos incompletos");
         } else {
             $array = array(
                 "nombres"   =>  strtoupper($this->input->post("nombres")),
@@ -228,7 +228,7 @@ class Panel_Administrativo extends CI_Controller
             ]
         ]);
         if ($this->form_validation->run() == FALSE) {
-            echo $this->mensaje("Debe revisar los datos");
+            echo $this->mensaje("Datos incompletos");
         } else {
             $array = array(
                 "nombres"   =>  strtoupper($this->input->post("nombres")),
