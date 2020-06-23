@@ -38,7 +38,7 @@
             <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses" id="formulario-registrar"> -->
 
             <div class="col">
-                <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarInteres" id="formulario-editar-interes" onchange="this.submit()">
+                <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses" id="formulario-intereses" onchange="editarIntereses()">
 
                     <div class="row">
                         <div class="col">
@@ -279,6 +279,25 @@
     else
         document.getElementById("administrarUsuarios").style.display = "none";
 
+    /**
+     * actualizar los intereres, checked
+     */
+    let respuesInteresesUsuario = <?= $intereses_usuario; ?>;
+    if (typeof respuesInteresesUsuario === 'object') {
+        let arrayNombreInteres = ["gastronomia", "deportes", "desarrolo_web", "desarrollo_movil", "politica", "cine",
+            "esoterismo", "hogar_y_moda", "psicologia"
+        ];
+
+        for (let index = 0; index < arrayNombreInteres.length; index++) {
+            if (respuesInteresesUsuario.data[arrayNombreInteres[index]] == "true")
+                document.getElementById(arrayNombreInteres[index]).checked = true;
+            else
+                document.getElementById(arrayNombreInteres[index]).checked = false;
+        }
+        console.
+        log(respuesInteresesUsuario.data);
+    }
+    // console.log(respuesInteresesUsuario);
     /**
      * cierra la sesion
      *
@@ -660,6 +679,58 @@
                             administrarUsuarios();
                         } else
                             alert(objetoRespuesta.message)
+                    } else
+                        console.log("Error inesperado");
+                }
+            });
+        }
+    }
+
+
+    /**
+     * #formulario-editar-usuario
+     * edita o crea un usuario
+     * accion que realiza un admin
+     */
+    // $(document).ready(function() {
+    //     $('#formulario-intereses').on('submit', function(e) {
+    //         e.preventDefault();
+    function editarIntereses() {
+        // console.log("formulario-editar-intereses");
+        let arrayNombreInteres = ["gastronomia", "deportes", "desarrolo_web", "desarrollo_movil", "politica", "cine",
+            "esoterismo", "hogar_y_moda", "psicologia"
+        ];
+
+        let contadorIntereses = 0;
+
+        let objetoIntereses = {}
+
+        for (let index = 0; index < arrayNombreInteres.length; index++) {
+            if (document.getElementById(arrayNombreInteres[index]).checked) {
+                objetoIntereses[arrayNombreInteres[index]] = "true";
+                contadorIntereses++;
+            } else
+                objetoIntereses[arrayNombreInteres[index]] = "false";
+        }
+        // console.log("objetoIntereses", objetoIntereses);
+        if (contadorIntereses > 4) {
+            window.location = '<?= base_url() ?>index.php/Panel_Administrativo/';
+        } else {
+            objetoIntereses["email"] = "<?= $this->session->sesion_sistema_administrativo['email']; ?>";
+            // console.log("objetoIntereses", objetoIntereses);
+            $.ajax({ //ajax jQuery
+                type: "post",
+                url: "<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses",
+                data: objetoIntereses,
+                success: function(respuesta) {
+                    if (typeof respuesta === 'string') {
+                        let objetoRespuesta = JSON.parse(respuesta);
+                        if (objetoRespuesta.status) {
+                            console.log(objetoRespuesta.message);
+                        } else {
+                            alert(objetoRespuesta.message);
+                            // window.location = '<?= base_url() ?>index.php/Panel_Administrativo/';
+                        }
                     } else
                         console.log("Error inesperado");
                 }

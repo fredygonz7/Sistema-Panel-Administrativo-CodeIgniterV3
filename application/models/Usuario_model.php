@@ -52,21 +52,6 @@ class Usuario_model extends CI_Model
         return ($this->mensaje("Error en alguno de los campos", 0, null, ""));
     }
 
-
-    // public function insertUsuario ($array)
-    // {
-    //     $query = $this->db->where('email', $array["email"])->get('usuario')->row();
-    //     if ($query == null) {
-
-    //         $created = $this->db->insert("usuario", $array);
-    //         if (!$created) {
-    //             return $this->mensaje("Problemas al registrar", 0);
-    //         } else
-    //             return $this->mensaje("Usuario agregado", 1);
-    //     }
-    //     return $this->mensaje("El usuario ya existe", 0);
-    // }
-
     /**
      * Valida inicio de sesion de usuario
      *
@@ -148,7 +133,6 @@ class Usuario_model extends CI_Model
         $query = $this->db->where('email', $email)->get('usuario')->row();
         if ($query == null) {
             return $this->mensaje("El usuario no existe", 0);
-            
         } else {
             $this->db->where('email', $email);
 
@@ -158,6 +142,71 @@ class Usuario_model extends CI_Model
             } else
                 return $this->mensaje("Usuario eliminado", 1);
         }
+    }
+
+    /**
+     * Obtiene intereses de un usuario
+     *
+     * @param string $email
+     * @return void
+     */
+    public function getIntereses($email)
+    {
+        $datos = $this->db->where('email_usuario', $email)->get('intereses')->row();
+        // print_r($datos);die();
+        if ($datos) {
+            return ($this->mensaje("Usuario encontrado", 1, $datos));
+        }
+        return ($this->mensaje("Error en alguno de los campos", 0));
+    }
+
+    /**
+     * Crear o Edita intereses de un usuario
+     *
+     * @param array $array
+     * @return json
+     */
+    public function editarIntereses($array)
+    {
+        $query = $this->db->where('email', $array["email_usuario"])->get('usuario')->row();
+        if ($query == null)
+            return $this->mensaje("El usuario no existe", 0);
+        else {
+            $queryInteres = $this->Usuario_model->getIntereses($array["email_usuario"]) ;
+            
+            if (json_decode($queryInteres)->status) {
+                // si existe el registro, lo actualiza
+                $this->db->where('email_usuario', $array["email_usuario"]);
+                // // $this->db->update('mytable', $data);
+                $editado = $this->db->update("intereses", $array);
+                if (!$editado) {
+                    return $this->mensaje("Problemas al editar", 0);
+                } else
+                    return $this->mensaje("Actualizacion de intereses exitoso", 1);
+            } else {
+                // sino existe el registro, se crea
+                $created = $this->db->insert("intereses", $array);
+                if (!$created) {
+                    return $this->mensaje("Problemas al registrar", 0);
+                } else
+                    return $this->mensaje("Registro de intereses exitoso", 1);
+            }
+
+            // return $this->mensaje("usuario encontrado", 1);
+        }
+
+        // sin crear usuario en la tabla intereses
+        // else {
+        //     $this->db->where('email_usuario', $array["email_usuario"]);
+        //     // // $this->db->update('mytable', $data);
+        //     $editado = $this->db->update("intereses", $array);
+        //     if (!$editado) {
+        //         return $this->mensaje("Problemas al editar", 0);
+        //     } else
+        //         return $this->mensaje("Usuario editado", 1);
+
+        //     // return $this->mensaje("usuario encontrado", 1);
+        // }
     }
 
     /**

@@ -15,6 +15,7 @@ class Welcome extends CI_Controller
 		// email.tests.pruebas@gmail.com
 		// 123456Pruebas
 	}
+	
 	public function index()
 	{
 		$sesionIniciada = $this->session->sesion_sistema_administrativo;
@@ -148,7 +149,12 @@ class Welcome extends CI_Controller
 			$this->mensaje("Correo invalido");
 	}
 
-
+	/**
+	 * Envia correo de activar cuenta
+	 *
+	 * @param string $destino
+	 * @return json
+	 */
 	function enviarCorreo($destino)
 	{
 		// $this->load->library('enviaremail', array('fredgonz7@gmail.com', 'Test asunto', 'Test mensaje'));
@@ -172,7 +178,7 @@ class Welcome extends CI_Controller
 					<body>
 						<p>Hola</p>
 						<p>Para activar la cuenta haga clic al siguiente link</p>
-						<a href="https://sistema-panel-administrativo.test/index.php/Panel_Administrativo/activarUsuario?email=' . $destino . '">https://sistema-panel-administrativo.test</a>
+						<a href="https://sistema-panel-administrativo.test/index.php/Welcome/activarUsuario?email=' . $destino . '">https://sistema-panel-administrativo.test</a>
 						<p style="margin-top: 15px";>Despues podra inicias sesion</p>
 					</body>
 					</html>';
@@ -228,6 +234,12 @@ class Welcome extends CI_Controller
 		}
 	}
 	
+	/**
+	 * activa al usuario 
+	 * recibe por GET el correo del usuario
+	 *
+	 * @return html
+	 */
 	function activarUsuario()
 	{
 		$array = array(

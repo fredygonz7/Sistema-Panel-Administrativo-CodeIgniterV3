@@ -27,7 +27,9 @@ class Panel_Administrativo extends CI_Controller
             json_decode($datos)->status == 1 && json_decode($datos)->data->activo == "true") {            
             $this->load->view('include/header');
             $this->load->view('include/menu_panel');
-            $this->load->view('panel_administrativo/usuario');
+            $data['intereses_usuario'] = $this->Usuario_model->getIntereses($sesionIniciada['email']);
+            // print_r($data['intereses_usuario']);
+            $this->load->view('panel_administrativo/usuario', $data);
             $this->load->view('include/footer');
         } else {
             $this->cerrarSesion();
@@ -117,7 +119,7 @@ class Panel_Administrativo extends CI_Controller
     }
 
     /**
-     * Cominica los datos de editar perfil con el modelo que actualiza los datos del usuario
+     * Comunica los datos de editar perfil con el modelo que actualiza los datos del usuario
      *
      * @return void
      */
@@ -190,6 +192,88 @@ class Panel_Administrativo extends CI_Controller
 
 
     /**
+     * Cominica los datos de editar perfil con el modelo que actualiza los datos del usuario
+     *
+     * @return void
+     */
+    public function editarIntereses()
+    {
+        // validar reglas
+        $this->form_validation->set_rules([
+            [
+                "field" => "email",
+                "label" => "email",
+                "rules" => "required|valid_email"
+            ],
+            [
+                "field" => "gastronomia",
+                "label" => "gastronomia",
+                "rules" => "required"
+            ],
+            [
+                "field" => "deportes",
+                "label" => "deportes",
+                "rules" => "required"
+            ],
+            [
+                "field" => "desarrolo_web",
+                "label" => "desarrolo_web",
+                "rules" => "required"
+            ],
+            [
+                "field" => "desarrollo_movil",
+                "label" => "desarrollo_movil",
+                "rules" => "required"
+            ],
+            [
+                "field" => "politica",
+                "label" => "politica",
+                "rules" => "required"
+            ],
+            [
+                "field" => "cine",
+                "label" => "cine",
+                "rules" => "required"
+            ],
+            [
+                "field" => "esoterismo",
+                "label" => "esoterismo",
+                "rules" => "required"
+            ],
+            [
+                "field" => "hogar_y_moda",
+                "label" => "hogar_y_moda",
+                "rules" => "required"
+            ],
+            [
+                "field" => "psicologia",
+                "label" => "psicologia",
+                "rules" => "required"
+            ]
+        ]);
+        if ($this->form_validation->run() == FALSE) {
+            echo $this->mensaje("Datos incompletos");
+        } else {
+            $array = array(
+                "email_usuario"             =>  strtoupper($this->input->post("email")),
+                "gastronomia"       =>  $this->input->post("gastronomia"),
+                "deportes"          =>  $this->input->post("deportes"),
+                "desarrolo_web"     =>  $this->input->post("desarrolo_web"),
+                "desarrollo_movil"  =>  $this->input->post("desarrollo_movil"),
+                "politica"          =>  $this->input->post("politica"),
+                "cine"              =>  $this->input->post("cine"),
+                "esoterismo"        =>  $this->input->post("esoterismo"),
+                "hogar_y_moda"      =>  $this->input->post("hogar_y_moda"),
+                "psicologia"        =>  $this->input->post("psicologia")
+            );
+            // print_r($array);
+            $datos = $this->Usuario_model->editarIntereses($array);
+            echo $datos;
+        }
+    }
+
+
+    /**
      * Cominica los datos de editar usuario con el modelo que actualiza los datos de un usuario
      * accion que puede realizar un adminitrador
      *
@@ -256,7 +340,6 @@ class Panel_Administrativo extends CI_Controller
     /**
      * Eliminar un usuario 
      *
-     * @param string $email
      * @return void
      */
     public function eliminarUsuario()
@@ -277,37 +360,6 @@ class Panel_Administrativo extends CI_Controller
             echo $datos;
         }
     }
-
-
-    /**
-     * Muestra la vista de Administrar Usuarios
-     * Ejecuta la funcion getUsuarios de Usuario_model para optener todos los usuarios
-     *
-     * @return mensaje con la lista de usuarios
-     */
-    // public function Administrar_Usuarios()
-    // {
-    //     // $datos = $this->Usuario_model->getUsuarios();
-    //     // echo $datos;
-    //     $this->load->view('include/header');
-    //     $sesionIniciada = $this->session->sesion_sistema_administrativo;
-    //     // print_r($sesionIniciada);
-    //     // die();
-
-    //     // print_r($this->session);
-    //     if ($sesionIniciada['perfil'] == "usuario") {
-    //         $this->load->view('include/menu_panel');
-    //         $this->load->view('panel_administrativo/usuario');
-    //     }
-    //     else if ($sesionIniciada['perfil'] == "admin") {
-    //         $this->load->view('include/menu_panel');
-    //         $this->load->view('panel_administrativo/administrar_usuarios');
-    //     } else {
-    //         $this->load->view('include/menu');
-    //         $this->load->view('welcome_message');
-    //     }
-    //     $this->load->view('include/footer');
-    // }
 
     /**
      * Function de respuestas
