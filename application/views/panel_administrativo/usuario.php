@@ -2,25 +2,25 @@
 <div class="row" id="div-perfil-usuario">
 
     <div class="col-sm-4 col-md-4">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center pt-2">
             <img class="img-fluid" alt="Sin avatar" src="<?= $this->session->sesion_sistema_administrativo['avatar']; ?>">
         </div>
-        <div class="row justify-content-center">
-            <!-- <div class="form-row"> -->
+        <div class="row justify-content-center p-2 pb-4">
+            <!-- <div class=" form-row"> -->
             <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/descargarPefilt" id="formulario-descargarPefilt"> -->
-            <div class="">
+            <div class="p-1">
                 <button type="submit" class="btn btn-outline-secondary">Descargar mi perfil en PDF</button>
             </div>
             <!-- </form> -->
             <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/enviarPefilt" id="formulario-enviarPefilt"> -->
-            <div class="">
+            <div class="p-1">
                 <button type="submit" class="btn btn-outline-secondary">Enviar mi perfil a mi correo</button>
             </div>
             <!-- </form> -->
             <!-- </div> -->
         </div>
     </div>
-    <div class="col-sm-8 col-md-8">
+    <div class="col-sm-8 col-md-8 pt-2">
         <div class="row">
             <div class="col">
                 <div class="text-center">
@@ -140,7 +140,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
@@ -246,9 +245,13 @@
 <!-- tabla administrar usuarios -->
 <div id="div-administrar-usuario" style="display: none;">
     <div class="row">
-        <div class="">
-            <h3>Administrar Usuarios</h3>
-            <button type="button" class="btn btn-outline-secondary" onclick="crearUsuario_Admin()">Nuevo</button>
+        <div class="col-12 p-2">
+            <div>
+                <h3>Administrar Usuarios</h3>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <button type="button" class="btn btn-outline-secondary" onclick="crearUsuario_Admin()">Nuevo</button>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -522,36 +525,55 @@
         }
     }
 
-
+    /**
+     * envia informacion de perfil a un usuario por correo
+     *
+     * @return void
+     */
     function enviarEmailUsuario(datos) {
         console.log("enviarEmailUsuario", datos);
-
     }
 
-
+    /**
+     * prepara modal para editar usuario
+     *
+     * @return void
+     */
     function editarUsuario_Admin(datos) {
         console.log("editarUsuario_Admin", datos);
         let formulario = document.getElementById("formulario-editar-usuario");
         formulario.reset();
         document.getElementById("editarUsuarioModalLabel").innerHTML = "Editar Usuario";
+        // document.getElementById("editarUsuarioModalLabel").dataset.activo = datos.activo;
         formulario.action = "<?= base_url() ?>index.php/Panel_Administrativo/editarUsuario"
         document.getElementById("nombresEditarUsuario").value = datos.nombres;
         document.getElementById("apellidosEditarUsuario").value = datos.apellidos;
         document.getElementById("emailEditarUsuario").value = datos.email;
         document.getElementById("activoEditarUsuario").checked = (datos.activo == "true" ? true : false)
         document.getElementById("perfilEditarUsuario").checked = (datos.perfil == "true" ? true : false)
+        document.getElementById("activoEditarUsuario").parentElement.style.display = "block";
+        document.getElementById("perfilEditarUsuario").parentElement.style.display = "block";
         document.getElementById("btn-editar-usuario").innerText = "Guardar Cambios";
 
         $('#editarUsuarioModal').modal('show');
     }
 
-
+    /**
+     * prepara modal para crear usuario
+     *
+     * @return void
+     */
     function crearUsuario_Admin() {
         console.log("crearUsuario_Admin");
         let formulario = document.getElementById("formulario-editar-usuario");
         formulario.reset();
         document.getElementById("editarUsuarioModalLabel").innerHTML = "Crear Usuario";
+        // document.getElementById("editarUsuarioModalLabel").dataset.activo = 'true';
         formulario.action = "<?= base_url() ?>index.php/Panel_Administrativo/crearUsuario";
+        document.getElementById("activoEditarUsuario").checked = true;
+        document.getElementById("perfilEditarUsuario").checked = false;
+        document.getElementById("activoEditarUsuario").parentElement.style.display = "none";
+        document.getElementById("perfilEditarUsuario").parentElement.style.display = "none";
         document.getElementById("btn-editar-usuario").innerText = "Crear Usuario";
 
         $('#editarUsuarioModal').modal('show');
@@ -559,7 +581,8 @@
 
     /**
      * #formulario-editar-usuario
-     * edita el perfil de un usuario accion que realiza un admin
+     * edita o crea un usuario
+     * accion que realiza un admin
      */
     $(document).ready(function() {
         $('#formulario-editar-usuario').on('submit', function(e) {
@@ -583,8 +606,9 @@
                     apellidos: document.getElementById("apellidosEditarUsuario").value,
                     email: document.getElementById("emailEditarUsuario").value,
                     password,
-                    activo: document.getElementById("activoEditarUsuario").checked ? "true" : "false",
-                    perfil: document.getElementById("perfilEditarUsuario").checked ? "admin" : "usuario"
+                    // activo: document.getElementById("editarUsuarioModalLabel").getAttribute("data-activo")
+                    activo: (document.getElementById("activoEditarUsuario").checked ? "true" : "false"),
+                    perfil: (document.getElementById("perfilEditarUsuario").checked ? "admin" : "usuario")
                     // ,accion: document.getElementById("editarUsuarioModalLabel").innerHTML
                 };
                 console.log(data);
@@ -644,5 +668,26 @@
     }
 
     /****************************************** */
-    administrarUsuarios();
+    // administrarUsuarios();
 </script>
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body {
+            font-family: Helvetica Neue, Helvetica, Lucida Grande, tahoma, verdana, arialsans-serif;
+            font-size: 16px;
+            line-height: 21px;
+            color: #141823;
+        }
+    </style>
+</head>
+<body>
+    <p>Hola</p>
+    <p>Para activar la cuenta ingrese al siguiente link</p>
+    <a href="https://sistema-panel-administrativo.test/index.php/Panel_Administrativo/activarUsuario?email=fredy@gmail">https://sistema-panel-administrativo.test</a>
+    <p style="margin-top: 15px";>Despues podra inicias sesion</p>
+</body>
+</html> -->

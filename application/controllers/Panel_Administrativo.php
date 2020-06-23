@@ -6,9 +6,9 @@ class Panel_Administrativo extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library('form_validation');
-        $this->load->helper('form');
-        $this->load->library('session');
+        // $this->load->library('form_validation');
+        // $this->load->helper('form');
+        // $this->load->library('session');
         // $this->load->model('Usuario_model');
     }
 
@@ -24,8 +24,7 @@ class Panel_Administrativo extends CI_Controller
         $datos = $this->Usuario_model->getUsuario($sesionIniciada['email']);
 
         if (($sesionIniciada['perfil'] == "admin" || $sesionIniciada['perfil'] == "usuario") && 
-            json_decode($datos)->status == 1) {
-
+            json_decode($datos)->status == 1 && json_decode($datos)->data->activo == "true") {            
             $this->load->view('include/header');
             $this->load->view('include/menu_panel');
             $this->load->view('panel_administrativo/usuario');
@@ -99,7 +98,8 @@ class Panel_Administrativo extends CI_Controller
                 "rules" => "required"
             ]
         ]);
-        
+        // print_r($_POST);
+        // die();
         if ($this->form_validation->run() == FALSE) {
             echo $this->mensaje("Datos incompletos");
         } else {
