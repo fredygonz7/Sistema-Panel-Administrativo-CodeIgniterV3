@@ -373,36 +373,6 @@ class Panel_Administrativo extends CI_Controller
         $filename = 'PerfilSistemaAdministrativo';
         $html = $this->CuerpoPDF();
         $this->generarpdf->generate($html, $filename);
-        // $intereses_usuario  = json_decode($this->Usuario_model->getIntereses($_GET['email']));
-        // $datos_usuario     = json_decode($this->Usuario_model->getUsuario($_GET['email']));
-
-        // if ($datos_usuario->status && $intereses_usuario->status) {
-
-        //     $data['nombresapellidos'] = $datos_usuario->data->nombres . " " . $datos_usuario->data->apellidos;
-        //     $data['email'] = $datos_usuario->data->email;
-        //     $data['perfil'] = $datos_usuario->data->perfil = "admin" ? "Administrador" : "Usuario";
-        //     $data['avatar'] = $datos_usuario->data->avatar;
-
-        //     $listaIntereses = "";
-
-        //     foreach ($intereses_usuario->data as $interes => $valor) {
-        //         if ($valor == "true") {
-        //             if ($listaIntereses == "")
-        //                 $listaIntereses .= strtoupper($interes[0]). substr($interes,1);
-        //             else
-        //                 $listaIntereses = $listaIntereses.", " . strtoupper($interes[0]) . substr($interes, 1);
-        //         }
-        //     }
-        //     $data['intereses'] = $listaIntereses;
-
-        //     $html = $this->load->view('pdf/perfil', $data, TRUE);
-        //     $this->load->library('generarpdf');
-        //     $filename = 'PerfilSistemaAdministrativo'. $datos_usuario->data->nombres.$datos_usuario->data->apellidos;
-        //     $this->generarpdf->generate($html, $filename);
-
-        //     // $this->load->view('pdf/perfil', $data);
-        // }else
-        //     header("Location: " . base_url());
     }
 
 

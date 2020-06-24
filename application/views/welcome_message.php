@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center">
-	<div class="row" id="div-registrar">
-		<div class="">
+	<div class="row">
+		<div class="" id="div-registrar">
 			<div class="text-center">
 				<h1>Registrate</h1>
 			</div>
@@ -84,8 +84,10 @@
 					<input type="password" class="form-control" id="passwordLogin" name="password">
 				</div>
 				<div id="recapcha-inicio-sesion">
+
+					<div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT"></div>
 				</div>
-				<!-- <button class="g-recaptcha" data-sitekey="6Lfs1KgZAAAAAM3dOaT747MD-HbTIosnyIHF5AVM" data-callback='onSubmit' data-action='submit'>Submit</button> -->
+
 				<div class="form-row">
 					<div class="col">
 						<button type="submit" class="btn btn-primary">Iniciar sesion</button>
@@ -173,7 +175,14 @@
 			document.getElementById("formulario-registrar").reset();
 			document.getElementById("formulario-sesion").reset();
 
-			// document.getElementById("recapcha-inicio-sesion").appendChild ="<div class='g-recaptcha' data-sitekey='6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT' style='margin-bottom: 15px;'></div>";
+
+			// <div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT"></div>
+			let div = document.createElement("div");
+			div.className = "g-recaptcha";
+			div["data-sitekey"] = "6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT";
+			document.getElementById("recapcha-inicio-sesion").appendChild(div);
+			// document.getElementById("recapcha-inicio-sesion").innerHTML = "<div class='g-recaptcha' data-sitekey='6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT' style='margin-bottom: 15px;'></div>";
+
 		}
 
 		/**
@@ -184,12 +193,12 @@
 		$(document).ready(function() {
 			$('#formulario-sesion').on('submit', function(e) { //evento submit
 				e.preventDefault();
-				// var response = grecaptcha.getResponse();
-				// if (response.length == 0) {
-				// 	alert("please verify you are humann!");
-				// 	e.preventDefault();
-				// 	return false;
-				// }
+				var response = grecaptcha.getResponse();
+				if (response.length == 0) {
+					alert("please verify you are humann!");
+					e.preventDefault();
+					return false;
+				}
 				$.ajax({ //ajax jQuery
 					type: this.method, //metodo para enviar datos al servidor
 					url: this.action, //url del servidor "archivo php"
