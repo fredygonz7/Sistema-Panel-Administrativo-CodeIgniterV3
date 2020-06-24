@@ -10,30 +10,30 @@
 			<form method="post" action="<?= base_url() ?>index.php/Welcome/registrar" id="formulario-registrar">
 				<div class="form-group">
 					<label for="nombres">Nombres</label>
-					<input type="text" class="form-control" id="nombres" aria-describedby="emailHelp" name="nombres">
+					<input type="text" class="form-control" id="nombres" required aria-describedby="emailHelp" name="nombres">
 				</div>
 				<div class="form-group">
 					<label for="apellidos">Apellidos</label>
-					<input type="text" class="form-control" id="apellidos" aria-describedby="emailHelp" name="apellidos">
+					<input type="text" class="form-control" id="apellidos" required aria-describedby="emailHelp" name="apellidos">
 				</div>
 				<div class="form-group">
 					<label for="email">Email</label>
-					<input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+					<input type="email" class="form-control" id="email" required aria-describedby="emailHelp" name="email">
 				</div>
 				<div class="form-group">
 					<label for="password">Contraseña</label>
-					<input type="password" class="form-control" id="passwordRegistrar" name="password">
+					<input type="password" class="form-control" id="passwordRegistrar" required name="password">
 				</div>
 				<div class="form-group">
 					<label for="passwordConfirm">Confirmar contraseña</label>
-					<input type="password" class="form-control" id="passwordConfirmRegistrar" name="passwordConfirm">
+					<input type="password" class="form-control" id="passwordConfirmRegistrar" required name="passwordConfirm">
 				</div>
 				<div class="form-group">
 					<label for="avatar">Avatar</label>
 					<input type="file" class="form-control-file" id="avatar" accept="image/*" name="avatar" onchange="encodeImageFileAsURL(this.id);">
 				</div>
 
-				<div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT"></div>
+				<div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT" id="recaptchaRegistrar"></div>
 
 				<button type="submit" class="btn btn-primary">Registrarme</button>
 			</form>
@@ -77,15 +77,15 @@
 			<form method="post" action="<?= base_url() ?>index.php/Welcome/login" id="formulario-sesion">
 				<div class="form-group">
 					<label for="email">Email</label>
-					<input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" name="email">
+					<input type="email" class="form-control" id="emailLogin" required aria-describedby="emailHelp" name="email">
 				</div>
 				<div class="form-group">
 					<label for="password">Contraseña</label>
-					<input type="password" class="form-control" id="passwordLogin" name="password">
+					<input type="password" class="form-control" id="passwordLogin" required name="password">
 				</div>
 				<div id="recapcha-inicio-sesion">
 
-					<div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT"></div>
+					<!-- <div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT" id="recaptchaSesion"></div> -->
 				</div>
 
 				<div class="form-row">
@@ -105,52 +105,53 @@
 		/**
 		 * registrar usuario estandar
 		 */
-		$(document).ready(function() {
-			$('#formulario-registrar').on('submit', function(e) { //evento submit
-				e.preventDefault(); //para que no se abra el archivo phplet avatar;
-				// if (avatarCode == "") {
-				var response = grecaptcha.getResponse();
-				if (response.length == 0) {
-					alert("please verify you are humann!");
-					e.preventDefault();
-					return false;
-				}
-				// 	avatar = "<?= $this->session->sesion_sistema_administrativo['avatar']; ?>";
-				// } else
-				data = {
-					nombres: document.getElementById("nombres").value,
-					apellidos: document.getElementById("apellidos").value,
-					email: document.getElementById("email").value,
-					password: document.getElementById("passwordRegistrar").value,
-					avatar: avatarCode
-				};
-				// console.log("data", data);
+		// $(document).ready(function() {
+		document.getElementById("formulario-registrar").addEventListener("submit", function(e) { //evento submit
+			e.preventDefault(); //para que no se abra el archivo php
+			var response = grecaptcha.getResponse();
+			if (response.length == 0) {
+				alert("please verify you are humann!!");
+				e.preventDefault();
+				return false;
+			}
+			// let avatar;
+			// if (avatarCode == "") {
+			// 	avatar = "< ?= $this->session->sesion_sistema_administrativo['avatar']; ?>";
+			// } else
+			data = {
+				nombres: document.getElementById("nombres").value,
+				apellidos: document.getElementById("apellidos").value,
+				email: document.getElementById("email").value,
+				password: document.getElementById("passwordRegistrar").value,
+				avatar: avatarCode
+			};
+			// console.log("data", data);
 
-				if (document.getElementById("passwordRegistrar").value === document.getElementById("passwordConfirmRegistrar").value) {
-					$.ajax({ //ajax jQuery
-						type: this.method, //metodo para enviar datos al servidor
-						url: this.action, //url del servidor "archivo php"
-						//contentType : "text/x-json",//prueba para enviarlo como json
-						data, //enviando los datos del "formulario" al servidor
-						success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
-							// let objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
-							console.log(respuesta);
-							if (typeof respuesta === 'string') {
-								let objetoRespuesta = JSON.parse(respuesta);
-								if (objetoRespuesta.status) {
-									// console.log(objetoRespuesta.message);
-									mostrarMensajeCorreoEnviado();
-								} else
-									alert(objetoRespuesta.message)
+			if (document.getElementById("passwordRegistrar").value === document.getElementById("passwordConfirmRegistrar").value) {
+				$.ajax({ //ajax jQuery
+					type: this.method, //metodo para enviar datos al servidor
+					url: this.action, //url del servidor "archivo php"
+					//contentType : "text/x-json",//prueba para enviarlo como json
+					data, //enviando los datos del "formulario" al servidor
+					success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
+						// let objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
+						console.log(respuesta);
+						if (typeof respuesta === 'string') {
+							let objetoRespuesta = JSON.parse(respuesta);
+							if (objetoRespuesta.status) {
+								// console.log(objetoRespuesta.message);
+								mostrarMensajeCorreoEnviado();
 							} else
-								console.log("Error inesperado");
-						}
-					});
-				} else {
-					alert("las contraseñas no coinciden")
-				}
-			});
+								alert(objetoRespuesta.message)
+						} else
+							console.log("Error inesperado");
+					}
+				});
+			} else {
+				alert("las contraseñas no coinciden")
+			}
 		});
+		// });
 
 		/**
 		 * Funcion encargada de moestrar el interfaz con mensaje de correo enviado y ocultar los demas
@@ -177,10 +178,10 @@
 
 
 			// <div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT"></div>
-			let div = document.createElement("div");
-			div.className = "g-recaptcha";
-			div["data-sitekey"] = "6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT";
-			document.getElementById("recapcha-inicio-sesion").appendChild(div);
+			// let div = document.createElement("div");
+			// div.className = "g-recaptcha";
+			// div["data-sitekey"] = "6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT";
+			// document.getElementById("recapcha-inicio-sesion").appendChild(div);
 			// document.getElementById("recapcha-inicio-sesion").innerHTML = "<div class='g-recaptcha' data-sitekey='6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT' style='margin-bottom: 15px;'></div>";
 
 		}
@@ -190,37 +191,50 @@
 		 *
 		 * return void
 		 */
-		$(document).ready(function() {
-			$('#formulario-sesion').on('submit', function(e) { //evento submit
-				e.preventDefault();
-				var response = grecaptcha.getResponse();
-				if (response.length == 0) {
-					alert("please verify you are humann!");
-					e.preventDefault();
-					return false;
-				}
-				$.ajax({ //ajax jQuery
-					type: this.method, //metodo para enviar datos al servidor
-					url: this.action, //url del servidor "archivo php"
-					//contentType : "text/x-json",//prueba para enviarlo como json
-					data: $(this).serialize(), //enviando los datos del "formulario" al servidor
-					success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
-						//var objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
-						if (typeof respuesta === 'string') {
-							let objetoRespuesta = JSON.parse(respuesta);
-							if (objetoRespuesta.status) {
-								console.log(objetoRespuesta.message);
-								document.getElementById("formulario-sesion").reset();
-								location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
-								// setTimeout("location.href='< ?= base_url() ?>index.php/Panel_Administrativo/'", 1000);
-							} else
-								alert(objetoRespuesta.message)
+		// $(document).ready(function() {
+		document.getElementById("formulario-sesion").addEventListener("submit", function(e) {
+			// $('#formulario-sesion').on('submit', function(e) { //evento submit
+			e.preventDefault();
+
+			// $(".g-recaptcha").each(function() {
+			// 	var object = $(this);
+			// 	let response = grecaptcha.render(object.attr("id"));
+			// 		if (response.length == 0) {
+			// 			alert("please verify you are humann!");
+			// 			e.preventDefault();
+			// 			return false;
+			// 		}
+			// 	});
+
+			// var response = grecaptcha.getResponse();
+
+			// if (response.length == 0) {
+			// 	alert("please verify you are humann!");
+			// 	e.preventDefault();
+			// 	return false;
+			// }
+			$.ajax({ //ajax jQuery
+				type: this.method, //metodo para enviar datos al servidor
+				url: this.action, //url del servidor "archivo php"
+				//contentType : "text/x-json",//prueba para enviarlo como json
+				data: $(this).serialize(), //enviando los datos del "formulario" al servidor
+				success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
+					//var objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
+					if (typeof respuesta === 'string') {
+						let objetoRespuesta = JSON.parse(respuesta);
+						if (objetoRespuesta.status) {
+							console.log(objetoRespuesta.message);
+							document.getElementById("formulario-sesion").reset();
+							location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
+							// setTimeout("location.href='< ?= base_url() ?>index.php/Panel_Administrativo/'", 1000);
 						} else
-							console.log("Error inesperado");
-					}
-				});
+							alert(objetoRespuesta.message)
+					} else
+						console.log("Error inesperado");
+				}
 			});
 		});
+		// });
 
 		/**
 		 * Funcion encargada de mostrar el formulario de registrar y ocultar los otros

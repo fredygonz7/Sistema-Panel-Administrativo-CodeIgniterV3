@@ -29,8 +29,6 @@
             </div>
         </div>
         <div class="row">
-            <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses" id="formulario-registrar"> -->
-
             <div class="col">
                 <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses" id="formulario-intereses" onchange="editarIntereses()">
 
@@ -60,7 +58,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="desarrolo_web" name="desarrolo_web">
                                     <label class="form-check-label" for="desarrolo_web">
-                                        Desarrolo web
+                                        Desarrollo web
                                     </label>
                                 </div>
                             </div>
@@ -154,11 +152,11 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nombres">Nombres</label>
-                        <input type="text" class="form-control" id="nombresEditarPerfil" aria-describedby="emailHelp" name="nombres">
+                        <input type="text" class="form-control" id="nombresEditarPerfil" required aria-describedby="emailHelp" name="nombres">
                     </div>
                     <div class="form-group">
                         <label for="apellidos">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidosEditarPerfil" aria-describedby="emailHelp" name="apellidos">
+                        <input type="text" class="form-control" id="apellidosEditarPerfil" required aria-describedby="emailHelp" name="apellidos">
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña</label>
@@ -198,15 +196,15 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nombres">Nombres</label>
-                        <input type="text" class="form-control" id="nombresEditarUsuario" name="nombres">
+                        <input type="text" class="form-control" id="nombresEditarUsuario" required name="nombres">
                     </div>
                     <div class="form-group">
                         <label for="apellidos">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidosEditarUsuario" name="apellidos">
+                        <input type="text" class="form-control" id="apellidosEditarUsuario" required name="apellidos">
                     </div>
                     <div class="form-group">
                         <label for="email">Correo</label>
-                        <input type="text" class="form-control" id="emailEditarUsuario" aria-describedby="emailHelp" name="email">
+                        <input type="text" class="form-control" id="emailEditarUsuario" required aria-describedby="emailHelp" name="email">
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña</label>
