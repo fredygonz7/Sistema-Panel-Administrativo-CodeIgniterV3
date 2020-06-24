@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center">
-	<div class="row">
-		<div class="" id="div-registrar">
+	<div class="row" id="div-registrar">
+		<div class="">
 			<div class="text-center">
 				<h1>Registrate</h1>
 			</div>
@@ -195,7 +195,10 @@
 		document.getElementById("formulario-sesion").addEventListener("submit", function(e) {
 			// $('#formulario-sesion').on('submit', function(e) { //evento submit
 			e.preventDefault();
-
+			// recaptcha1 = grecaptcha.render('recaptchaSesion', {
+			// 	'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT', //Reemplazar esto por la Key de tu sitio
+			// 	'theme': 'light'
+			// });
 			// $(".g-recaptcha").each(function() {
 			// 	var object = $(this);
 			// 	let response = grecaptcha.render(object.attr("id"));
@@ -205,8 +208,7 @@
 			// 			return false;
 			// 		}
 			// 	});
-
-			// var response = grecaptcha.getResponse();
+			// var response = recaptcha1.getResponse();
 
 			// if (response.length == 0) {
 			// 	alert("please verify you are humann!");
