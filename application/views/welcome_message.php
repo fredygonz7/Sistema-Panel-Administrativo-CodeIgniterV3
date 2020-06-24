@@ -1,64 +1,21 @@
 <div class="d-flex justify-content-center">
+	<!-- script de reCaptcha -->
 	<script type="text/javascript">
-		// var verifyCallback = function(response) {
-		// 	alert(response);
-		// };
-		// var widgetIdSesion;
-		// var widgetIdRegistrar;
-		// var onloadCallback = function() {
-		// 	// Renders the HTML element with id 'example1' as a reCAPTCHA widget.
-		// 	// The id of the reCAPTCHA widget is assigned to 'widgetId1'.
-		// 	widgetIdRegistrar = grecaptcha.render('recaptchaSesion', {
-		// 		'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
-		// 		'theme': 'light'
-		// 	});
-		// 	widgetIdSesion = grecaptcha.render('recaptchaRegistrar', {
-		// 		'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
-		// 		'theme': 'light'
-		// 	});
-		// 	// widgetId2 = grecaptcha.render(document.getElementById('example2'), {
-		// 	// 	'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT'
-		// 	// });
-		// 	// grecaptcha.render('example3', {
-		// 	// 	'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
-		// 	// 	'callback': verifyCallback,
-		// 	// 	'theme': 'dark'
-		// 	// });
-		// };
-
-
+		
 		var verifyCallback = function(response) {
-			// alert("12" + response);
 			return response;
 		};
-		var widgetId1;
-		var widgetId2;
 		var widgetIdSesion;
 		var widgetIdRegistrar;
 		var onloadCallback = function() {
-			// Renders the HTML element with id 'example1' as a reCAPTCHA widget.
-			// The id of the reCAPTCHA widget is assigned to 'widgetId1'.
-			widgetIdRegistrar = grecaptcha.render('recaptchaSesion', {
+			widgetIdRegistrar = grecaptcha.render('recaptchaRegistrar', {
 				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
 				'theme': 'light'
 			});
-			widgetIdSesion = grecaptcha.render('recaptchaRegistrar', {
-				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
-				'theme': 'light'
-			});
-			// Renders the HTML element with id 'example1' as a reCAPTCHA widget.
-			// The id of the reCAPTCHA widget is assigned to 'widgetId1'.
-			widgetId1 = grecaptcha.render('example1', {
-				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
-				'theme': 'light'
-			});
-			widgetId2 = grecaptcha.render(document.getElementById('example2'), {
-				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT'
-			});
-			widgetId3 = grecaptcha.render('example3', {
+			widgetIdSesion = grecaptcha.render('recaptchaSesion', {
 				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
 				'callback': verifyCallback,
-				'theme': 'dark'
+				'theme': 'light'
 			});
 		};
 	</script>
@@ -98,8 +55,6 @@
 					<input type="file" class="form-control-file" id="avatar" accept="image/*" name="avatar" onchange="encodeImageFileAsURL(this.id);">
 				</div>
 
-				<div id="example1"></div>
-				<!-- <div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT" id="recaptchaRegistrar"></div> -->
 				<div id="recaptchaRegistrar"></div>
 
 				<button type="submit" class="btn btn-primary">Registrarme</button>
@@ -109,17 +64,6 @@
 
 	<!-- style="display: none" -->
 	<div class="row pt-4" id="div-correo-enviado" style="display: none">
-		<!-- <div class=" text-center" style="display: none">
-			<div class="">
-				<h1>Activa tu cuenta</h1>
-			</div>
-			<div>
-				<h4>Su cuenta ha sigo creada exitosamente</h4>
-				<h4>Hemos enviado un mensaje a su correo electronico para validar su cuenta.</h4>
-				<h4>Abra su email y haga clic en el link.</h4>
-			</div>
-			<button type="button" class="btn btn-primary" onclick="mostrarInicioSesion()">Iniciar sesion</button>
-		</div> -->
 		<div class="card">
 			<div class="card-header">
 				Activa tu cuenta
@@ -151,10 +95,7 @@
 					<input type="password" class="form-control" id="passwordLogin" required name="password">
 				</div>
 				<div id="recapcha-inicio-sesion">
-
 					<div id="recaptchaSesion"></div>
-					<div id="example3"></div>
-					<!-- <div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT" id="recaptchaSesion"></div> -->
 				</div>
 
 				<div class="form-row">
@@ -169,38 +110,6 @@
 		</div>
 	</div>
 
-
-	<!-- <html>
-	</head>
-
-	<body>
-		//The g-recaptcha-response string displays in an alert message upon submit.
-		 -->
-	<form action="javascript:alert(grecaptcha.getResponse(widgetId1));">
-		<br>
-		<input type="submit" value="getResponse">
-	</form>
-	<br>
-	<!-- // Resets reCAPTCHA widgetId2 upon submit. -->
-	<form action="javascript:alert(grecaptcha.getResponse(widgetId1));">
-		<div id="example2"></div>
-		<br>
-		<input type="submit" value="reset">
-	</form>
-	<br>
-	<!-- // POSTs back to the page's URL upon submit with a g-recaptcha-response POST parameter. -->
-	<form action="?" method="POST">
-
-		<br>
-		<input type="submit" value="Submit">
-	</form>
-	<!-- 
-		// <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer>
-		</script>
-	</body>
-
-	</html> -->
-
 	<script>
 		// variable que guarda el codigo del avatar
 		var avatarCode = "";
@@ -210,9 +119,9 @@
 		// $(document).ready(function() {
 		document.getElementById("formulario-registrar").addEventListener("submit", function(e) { //evento submit
 			e.preventDefault(); //para que no se abra el archivo php
-			
-			if (grecaptcha.getResponse(widgetId1).length == 0) {
-				alert("please verify you are humann!");
+
+			if (grecaptcha.getResponse(widgetIdRegistrar).length == 0) {
+				alert("Por favor, verifique que usted es humano!");
 				return false;
 			}
 			data = {
@@ -272,15 +181,6 @@
 			document.getElementById("div-sesion").style.display = "block";
 			document.getElementById("formulario-registrar").reset();
 			document.getElementById("formulario-sesion").reset();
-
-
-			// <div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT"></div>
-			// let div = document.createElement("div");
-			// div.className = "g-recaptcha";
-			// div["data-sitekey"] = "6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT";
-			// document.getElementById("recapcha-inicio-sesion").appendChild(div);
-			// document.getElementById("recapcha-inicio-sesion").innerHTML = "<div class='g-recaptcha' data-sitekey='6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT' style='margin-bottom: 15px;'></div>";
-
 		}
 
 		/**
@@ -290,12 +190,11 @@
 		 */
 		// $(document).ready(function() {
 		document.getElementById("formulario-sesion").addEventListener("submit", function(e) {
-			if (grecaptcha.getResponse(widgetId3).length == 0) {
-				alert("please verify you are humann!");
-				e.preventDefault();
+			e.preventDefault();
+			if (grecaptcha.getResponse(widgetIdSesion).length == 0) {
+				alert("Por favor, verifique que usted es humano!");
 				return false;
 			}
-			e.preventDefault();
 			$.ajax({ //ajax jQuery
 				type: this.method, //metodo para enviar datos al servidor
 				url: this.action, //url del servidor "archivo php"
@@ -317,7 +216,6 @@
 				}
 			});
 		});
-		// });
 
 		/**
 		 * Funcion encargada de mostrar el formulario de registrar y ocultar los otros
@@ -353,9 +251,6 @@
 				fileReader.readAsDataURL(fileToLoad);
 			}
 		}
-
-
-		// document.getElementById("captcha-form-registrar").addEventListener("submit", function(evt) {});
 	</script>
 
 	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
