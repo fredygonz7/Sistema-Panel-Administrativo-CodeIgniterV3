@@ -145,37 +145,73 @@
         </div>
     -->
         <table style="width:650px">
-            <tr>
+            <!-- <tr>
                 <td colspan="1" rowspan="9" style="vertical-align: top;">
                     <div class="center">
-                        <img src="<?= $avatar; ?>" alt=" Sin avatar" id="avatar" style="width:140px; margin-top: 30px;">
+                        <img src="< ?= $avatar; ?>" alt=" Sin avatar" id="avatar" style="width:140px; margin-top: 0px;">
                     </div>
                 </td>
             </tr>
             <tr>
                 <td>
             <tr>
-                <td colspan="3" class="center">
-                    <h3 id="nombresapellidos"> <?= $nombresapellidos; ?></h3>
+                <td colspan="3" class="left">
+                    <h3 id="nombresapellidos"> < ?= $nombresapellidos; ?></h3>
                 </td>
             </tr>
             <tr>
-                <td colspan="3" class="center">
-                    <h4 id="email"><?= $email; ?></h4>
+                <td colspan="3" class="left">
+                    <h4 id="email">< ?= $email; ?></h4>
                 </td>
             </tr>
             <tr>
-                <td colspan="3" class="center">
-                    <h4 id="perfil">Tu perfil es <?= $perfil; ?></h4>
+                <td colspan="3" class="left">
+                    <h4 id="perfil">Tu perfil es < ?= $perfil; ?></h4>
                 </td>
             </tr>
-
             <tr>
                 <td colspan="3">
                     <div class="negrita">Intereses</div>
                 </td>
             </tr>
-            <tr style="margin-top: 40px;">
+            <tr>
+                <td colspan="3">< ?= $intereses; ?></td>
+            </tr> -->
+
+
+            <tr>
+                <td colspan="1" rowspan="9" style="vertical-align: top;">
+                    <div class="center">
+                        <img src="<?= $avatar; ?>" alt=" Sin avatar" id="avatar" style="width:140px; margin-top: 0px;">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" rowspan="1" class="left">
+                    <h3 id="nombresapellidos"> <?= $nombresapellidos; ?></h3>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" rowspan="1" class="left">
+                    <h4 id="email"><?= $email; ?></h4>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="left">
+                    <h4 id="perfil">Tu perfil es <?= $perfil; ?></h4>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" rowspan="1">
+                    <div class="negrita">Intereses</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" rowspan="1"><?= $intereses; ?></td>
+            </tr>
+
+
+            <!-- <tr style="margin-top: 40px;">
                 <td rowspan="1">
                     <input type="checkbox" id="gastronomia">
                     <label>
@@ -233,9 +269,11 @@
                         Psicologia
                     </label>
                 </td>
-            </tr>
-            </td>
-            </tr>
+            </tr> -->
+
+
+            <!-- </td>
+            </tr> -->
         </table>
     </body>
 

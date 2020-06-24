@@ -508,7 +508,7 @@
                     descargarPDF.type = "button";
                     descargarPDF.value = "Descargar";
                     descargarPDF.onclick = function() {
-                        enviarEmailUsuario(objetoUsuarios[i].email)
+                        descargarPerfil(objetoUsuarios[i].email)
                     };
                     acciones.appendChild(descargarPDF);
 
@@ -539,37 +539,42 @@
     }
 
     /**
-     * envia informacion de perfil a un usuario por correo
+     * descargar pdf 
      *
      * @return void
      */
-
     function descargarPerfil(email) {
         console.log("descargarPerfilPropio", email);
         location.href = '<?= base_url() ?>index.php/Panel_Administrativo/GenerarPDF?email=' + email;
-        let data = {
-            email
-        }
-        let url = '<?= base_url() ?>index.php/Panel_Administrativo/GenerarPDF';
-        ajax("post", url, data, respuestDescargarPerfil);
+        // let data = {
+        //     email
+        // }
+        // let url = '< ?= base_url() ?>index.php/Panel_Administrativo/GenerarPDF';
+        // ajax("post", url, data, respuestDescargarPerfil);
     }
+    // callback de descargarPerfil
+    // function respuestDescargarPerfil(objetoRespuesta) {
+    //     alert(objetoRespuesta.message);
+    // }
 
-    function respuestDescargarPerfil(objetoRespuesta) {
-        alert(objetoRespuesta.message);
-    }
-
+    /**
+     * envia pdf por correo
+     *
+     * @return void
+     */
     function enviarEmailUsuario(email) {
         console.log("enviarEmailUsuario", email);
-        let data = {
-            email
-        }
-        let url = '<?= base_url() ?>index.php/Panel_Administrativo/EnviarPDF';
-        ajax("post", url, data, respuestaEnviarEmailUsuario);
+        location.href = '<?= base_url() ?>index.php/Panel_Administrativo/EnviarPDF?email=' + email;
+        // let data = {
+        //     email
+        // }
+        // let url = '< ?= base_url() ?>index.php/Panel_Administrativo/EnviarPDF';
+        // ajax("post", url, data, respuestaEnviarEmailUsuario);
     }
 
-    function respuestaEnviarEmailUsuario(objetoRespuesta) {
-        alert(objetoRespuesta.message);
-    }
+    // function respuestaEnviarEmailUsuario(objetoRespuesta) {
+    //     alert(objetoRespuesta.message);
+    // }
 
 
     /**
@@ -758,6 +763,7 @@
         }
     }
 
+    // no usada
     function ajax(type, url, data, callback) {
         $.ajax({ //ajax jQuery
             type,

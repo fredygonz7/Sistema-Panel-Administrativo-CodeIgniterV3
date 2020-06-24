@@ -32,9 +32,9 @@
 					<label for="avatar">Avatar</label>
 					<input type="file" class="form-control-file" id="avatar" accept="image/*" name="avatar" onchange="encodeImageFileAsURL(this.id);">
 				</div>
-				<!-- <div class="form-group form-check">
-					<div class="g-recaptcha" data-sitekey="6LfTjqcZAAAAAGoiy59gcEWg6Nk5XF_wwk1b9XI6"></div>
-				</div> -->
+
+				<div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT"></div>
+
 				<button type="submit" class="btn btn-primary">Registrarme</button>
 			</form>
 		</div>
@@ -83,10 +83,9 @@
 					<label for="password">Contraseña</label>
 					<input type="password" class="form-control" id="passwordLogin" name="password">
 				</div>
-				<div class="form-group form-check">
-					<input type="checkbox" class="form-check-input" id="checkLogin">
-					<label class="form-check-label" for="checkLogin">Check me out</label>
+				<div id="recapcha-inicio-sesion">
 				</div>
+				<!-- <button class="g-recaptcha" data-sitekey="6Lfs1KgZAAAAAM3dOaT747MD-HbTIosnyIHF5AVM" data-callback='onSubmit' data-action='submit'>Submit</button> -->
 				<div class="form-row">
 					<div class="col">
 						<button type="submit" class="btn btn-primary">Iniciar sesion</button>
@@ -99,11 +98,21 @@
 		</div>
 	</div>
 	<script>
+		// variable que guarda el codigo del avatar
 		var avatarCode = "";
+		/**
+		 * registrar usuario estandar
+		 */
 		$(document).ready(function() {
 			$('#formulario-registrar').on('submit', function(e) { //evento submit
 				e.preventDefault(); //para que no se abra el archivo phplet avatar;
 				// if (avatarCode == "") {
+				var response = grecaptcha.getResponse();
+				if (response.length == 0) {
+					alert("please verify you are humann!");
+					e.preventDefault();
+					return false;
+				}
 				// 	avatar = "<?= $this->session->sesion_sistema_administrativo['avatar']; ?>";
 				// } else
 				data = {
@@ -111,7 +120,7 @@
 					apellidos: document.getElementById("apellidos").value,
 					email: document.getElementById("email").value,
 					password: document.getElementById("passwordRegistrar").value,
-					avatar : avatarCode
+					avatar: avatarCode
 				};
 				// console.log("data", data);
 
@@ -163,6 +172,8 @@
 			document.getElementById("div-sesion").style.display = "block";
 			document.getElementById("formulario-registrar").reset();
 			document.getElementById("formulario-sesion").reset();
+
+			// document.getElementById("recapcha-inicio-sesion").appendChild ="<div class='g-recaptcha' data-sitekey='6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT' style='margin-bottom: 15px;'></div>";
 		}
 
 		/**
@@ -173,6 +184,12 @@
 		$(document).ready(function() {
 			$('#formulario-sesion').on('submit', function(e) { //evento submit
 				e.preventDefault();
+				// var response = grecaptcha.getResponse();
+				// if (response.length == 0) {
+				// 	alert("please verify you are humann!");
+				// 	e.preventDefault();
+				// 	return false;
+				// }
 				$.ajax({ //ajax jQuery
 					type: this.method, //metodo para enviar datos al servidor
 					url: this.action, //url del servidor "archivo php"
@@ -230,5 +247,8 @@
 				fileReader.readAsDataURL(fileToLoad);
 			}
 		}
+
+
+		// document.getElementById("captcha-form-registrar").addEventListener("submit", function(evt) {});
 	</script>
 </div>

@@ -89,13 +89,6 @@ class Welcome extends CI_Controller
 	 */
 	public function registrar()
 	{
-
-		// print_r($_POST);
-		// $captcha = $_POST['g-recaptcha-response'];
-		// $captcha_clave_secreta = '6LfTjqcZAAAAAI426GOq5mdrqmgZu5C-gACNFPvS';
-		// $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=". $captcha_clave_secreta."&response=" . $captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
-
-		// die();
 		// validar reglas
 		$this->form_validation->set_rules([
 			[
@@ -157,10 +150,6 @@ class Welcome extends CI_Controller
 	 */
 	function enviarCorreo($destino)
 	{
-		// $this->load->library('enviaremail', array('fredgonz7@gmail.com', 'Test asunto', 'Test mensaje'));
-		// $this->load->library('enviaremail');
-		// $this->enviaremail->enviar('fredgonz7@gmail.com', 'Test asunto', 'Test mensaje');
-		// $destino = "fredgonz7@gmail.com";
 		$asunto	= "Test Asunto";
 		$mensaje = '<!DOCTYPE html>
 					<html>
@@ -226,11 +215,6 @@ class Welcome extends CI_Controller
 				"data"          =>  "",
 				"description"   =>  $asunto
 			]));
-			// echo $this->email->print_debugger();
-			/*[
-				"message"       =>  "failed",
-				"description"   =>  "Error al enviar email"
-			];*/
 		}
 	}
 	
