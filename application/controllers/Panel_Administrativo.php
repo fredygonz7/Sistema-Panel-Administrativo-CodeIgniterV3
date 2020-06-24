@@ -361,6 +361,73 @@ class Panel_Administrativo extends CI_Controller
         }
     }
 
+    public function GenerarPDF()
+    {
+        // print_r($_POST);
+        // die;
+        // validar reglas
+        // $this->form_validation->set_rules([
+        //     [
+        //         "field" => "email",
+        //         "label" => "email",
+        //         "rules" => "required"
+        //     ]
+        // ]);
+
+        // if ($this->form_validation->run() == FALSE) {
+        //     echo $this->mensaje("Debe revisar los datos");
+        // } else {
+            // obtener correo de post
+            $intereses_usuario  = json_decode($this->Usuario_model->getIntereses($_GET['email']));
+            $datos_usuario     = json_decode($this->Usuario_model->getUsuario($_GET['email']));
+            
+            if ($datos_usuario->status && $datos_usuario->status){
+
+                // print_r($datos_usuario);
+                $data['nombresapellidos'] = $datos_usuario->data->nombres." ". $datos_usuario->data->apellidos;
+                $data['apellidos'] = $datos_usuario->data->apellidos;
+                $data['email'] = $datos_usuario->data->email;
+                $data['perfil'] = $datos_usuario->data->perfil = "admin" ? "Administrador" : "Usuario";
+                $data['avatar'] = $datos_usuario->data->avatar;
+                // print_r($data["nombreapellidos"]);
+
+                $html = $this->load->view('pdf/perfil', $data, TRUE);
+                $this->load->library('generarpdf');
+                $filename = 'PerfilSistemaAdministrativo';
+                $respuesta=$this->generarpdf->generate($html, $filename);
+                print_r($respuesta);
+                // die();
+                $this->load->view('pdf/perfil', $data);
+            }
+
+            // $data['intereses_usuario']  = $this->Usuario_model->getIntereses($sesionIniciada['email']);
+            // $data['datos_usuario']      = $this->Usuario_model->getUsuario($sesionIniciada['email']);
+        // }
+        
+
+        // $content = '<html>';
+        // $content .= '<head>';
+        // $content .= '<style>';
+        // $content .= '</style>';
+        // $content .= '</head><body>';
+        // $content .= '<h1>Ejemplo generaci&oacute;n PDF</h1>';
+        // $content .= 'Almacena en una variable todo el contenido que quieras incorporar ';
+        // $content .= 'en el documento <b>formato HTML</b> para generar a partir de &eacute;ste ';
+        // $content .= 'el documento PDF.<br><br>';
+        // $content .= 'Ejemplo lista<br>';
+        // $content .= '<ul><li>Uno</li><li>Dos</li><li>Tres</li></ul>';
+        // $content .= 'Ejemplo imagen<br><br>';
+        // $content .= '</body></html>';
+
+        // generamos el PDF. Pasemos por encima de la configuración general y definamos otro tipo de papel
+
+
+        // $html = $this->load->view('pdf/perfil', $data, TRUE);
+        // $this->load->library('generarpdf');
+        // $filename = 'TestNombre';
+        // $this->generarpdf->generate($html, $filename);
+    }
+
     /**
      * Function de respuestas
      *

@@ -6,18 +6,12 @@
             <img class="img-fluid" alt="Sin avatar" src="<?= $this->session->sesion_sistema_administrativo['avatar']; ?>">
         </div>
         <div class="row justify-content-center p-2 pb-4">
-            <!-- <div class=" form-row"> -->
-            <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/descargarPefilt" id="formulario-descargarPefilt"> -->
             <div class="p-1">
-                <button type="submit" class="btn btn-outline-secondary">Descargar mi perfil en PDF</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="descargarPerfil('<?= $this->session->sesion_sistema_administrativo['email']; ?>')">Descargar mi perfil en PDF</button>
             </div>
-            <!-- </form> -->
-            <!-- <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/enviarPefilt" id="formulario-enviarPefilt"> -->
             <div class="p-1">
-                <button type="submit" class="btn btn-outline-secondary">Enviar mi perfil a mi correo</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="enviarEmailUsuario('<?= $this->session->sesion_sistema_administrativo['email']; ?>')">Enviar mi perfil a mi correo</button>
             </div>
-            <!-- </form> -->
-            <!-- </div> -->
         </div>
     </div>
     <div class="col-sm-8 col-md-8 pt-2">
@@ -294,8 +288,7 @@
             else
                 document.getElementById(arrayNombreInteres[index]).checked = false;
         }
-        console.
-        log(respuesInteresesUsuario.data);
+        console.log(respuesInteresesUsuario.data);
     }
     // console.log(respuesInteresesUsuario);
     /**
@@ -497,7 +490,7 @@
                     let acciones = document.createElement("td");
 
                     let enviarEmail = document.createElement("input");
-                    enviarEmail.type = "button"
+                    enviarEmail.type = "button";
                     // a.href = '< ?= base_url() ?>index.php/producto/modificarProducto/?data=' + arrayData;
                     // a.href = '< ?= base_url() ?>index.php/producto/modificarProducto/?nombre=' + productos[i].nombre + '&precio=' + productos[i].precio;
 
@@ -506,10 +499,18 @@
 
                     // a.setAttribute("data-producto", productos[i].id);
                     enviarEmail.onclick = function() {
-                        enviarEmailUsuario(objetoUsuarios[i])
+                        enviarEmailUsuario(objetoUsuarios[i].email)
                     };
                     // enviarEmail.className = "cursor_pointer";
                     acciones.appendChild(enviarEmail);
+
+                    let descargarPDF = document.createElement("input");
+                    descargarPDF.type = "button";
+                    descargarPDF.value = "Descargar";
+                    descargarPDF.onclick = function() {
+                        enviarEmailUsuario(objetoUsuarios[i].email)
+                    };
+                    acciones.appendChild(descargarPDF);
 
                     let editar = document.createElement("input");
                     editar.type = "button"
@@ -531,13 +532,6 @@
                     fila.appendChild(acciones);
                     // fin acciones *******************************
 
-                    // //agregar evento a la fila
-                    // // fila.setAttribute("data-producto", productos[i].id);
-                    // // fila.onclick = function() {
-                    // //     eventoModificarProducto(this)
-                    // // };
-                    // // fila.className = "pointer";
-
                     tbody.appendChild(fila);
                 }
             }
@@ -549,9 +543,34 @@
      *
      * @return void
      */
-    function enviarEmailUsuario(datos) {
-        console.log("enviarEmailUsuario", datos);
+
+    function descargarPerfil(email) {
+        console.log("descargarPerfilPropio", email);
+        location.href = '<?= base_url() ?>index.php/Panel_Administrativo/GenerarPDF?email=' + email;
+        let data = {
+            email
+        }
+        let url = '<?= base_url() ?>index.php/Panel_Administrativo/GenerarPDF';
+        ajax("post", url, data, respuestDescargarPerfil);
     }
+
+    function respuestDescargarPerfil(objetoRespuesta) {
+        alert(objetoRespuesta.message);
+    }
+
+    function enviarEmailUsuario(email) {
+        console.log("enviarEmailUsuario", email);
+        let data = {
+            email
+        }
+        let url = '<?= base_url() ?>index.php/Panel_Administrativo/EnviarPDF';
+        ajax("post", url, data, respuestaEnviarEmailUsuario);
+    }
+
+    function respuestaEnviarEmailUsuario(objetoRespuesta) {
+        alert(objetoRespuesta.message);
+    }
+
 
     /**
      * prepara modal para editar usuario
@@ -714,6 +733,7 @@
         }
         // console.log("objetoIntereses", objetoIntereses);
         if (contadorIntereses > 4) {
+            alert("Se deben seleccionar maximo cuatro intereses");
             window.location = '<?= base_url() ?>index.php/Panel_Administrativo/';
         } else {
             objetoIntereses["email"] = "<?= $this->session->sesion_sistema_administrativo['email']; ?>";
@@ -738,9 +758,30 @@
         }
     }
 
-    /****************************************** */
-    // administrarUsuarios();
+    function ajax(type, url, data, callback) {
+        $.ajax({ //ajax jQuery
+            type,
+            url,
+            data,
+            success: function(respuesta) {
+                // console.log(respuesta);
+                if (typeof respuesta === 'string') {
+                    let objetoRespuesta = JSON.parse(respuesta);
+                    if (objetoRespuesta.status) {
+                        callback(objetoRespuesta);
+                        // console.log(objetoRespuesta.message);
+                        // document.getElementById("formulario-editar-perfil").reset();
+                        // location.href = '< ?= base_url() ?>index.php/Panel_Administrativo/';
+                    } else
+                        alert(objetoRespuesta.message)
+                } else
+                    console.log("Error inesperado");
+            }
+        });
+    }
 </script>
+
+
 <!-- <!DOCTYPE html>
 <html>
 
