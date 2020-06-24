@@ -12,8 +12,6 @@ class Welcome extends CI_Controller
 		// $this->load->library('session');
 		// $this->load->library('email');
 		// $this->load->model('Usuario_model');
-		// email.tests.pruebas@gmail.com
-		// 123456Pruebas
 	}
 	
 	public function index()

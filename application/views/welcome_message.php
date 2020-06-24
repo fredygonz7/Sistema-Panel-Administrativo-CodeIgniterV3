@@ -1,4 +1,69 @@
 <div class="d-flex justify-content-center">
+	<script type="text/javascript">
+		// var verifyCallback = function(response) {
+		// 	alert(response);
+		// };
+		// var widgetIdSesion;
+		// var widgetIdRegistrar;
+		// var onloadCallback = function() {
+		// 	// Renders the HTML element with id 'example1' as a reCAPTCHA widget.
+		// 	// The id of the reCAPTCHA widget is assigned to 'widgetId1'.
+		// 	widgetIdRegistrar = grecaptcha.render('recaptchaSesion', {
+		// 		'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
+		// 		'theme': 'light'
+		// 	});
+		// 	widgetIdSesion = grecaptcha.render('recaptchaRegistrar', {
+		// 		'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
+		// 		'theme': 'light'
+		// 	});
+		// 	// widgetId2 = grecaptcha.render(document.getElementById('example2'), {
+		// 	// 	'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT'
+		// 	// });
+		// 	// grecaptcha.render('example3', {
+		// 	// 	'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
+		// 	// 	'callback': verifyCallback,
+		// 	// 	'theme': 'dark'
+		// 	// });
+		// };
+
+
+		var verifyCallback = function(response) {
+			// alert("12" + response);
+			return response;
+		};
+		var widgetId1;
+		var widgetId2;
+		var widgetIdSesion;
+		var widgetIdRegistrar;
+		var onloadCallback = function() {
+			// Renders the HTML element with id 'example1' as a reCAPTCHA widget.
+			// The id of the reCAPTCHA widget is assigned to 'widgetId1'.
+			widgetIdRegistrar = grecaptcha.render('recaptchaSesion', {
+				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
+				'theme': 'light'
+			});
+			widgetIdSesion = grecaptcha.render('recaptchaRegistrar', {
+				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
+				'theme': 'light'
+			});
+			// Renders the HTML element with id 'example1' as a reCAPTCHA widget.
+			// The id of the reCAPTCHA widget is assigned to 'widgetId1'.
+			widgetId1 = grecaptcha.render('example1', {
+				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
+				'theme': 'light'
+			});
+			widgetId2 = grecaptcha.render(document.getElementById('example2'), {
+				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT'
+			});
+			widgetId3 = grecaptcha.render('example3', {
+				'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT',
+				'callback': verifyCallback,
+				'theme': 'dark'
+			});
+		};
+	</script>
+
+	</script>
 	<div class="row" id="div-registrar">
 		<div class="">
 			<div class="text-center">
@@ -33,7 +98,9 @@
 					<input type="file" class="form-control-file" id="avatar" accept="image/*" name="avatar" onchange="encodeImageFileAsURL(this.id);">
 				</div>
 
-				<div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT" id="recaptchaRegistrar"></div>
+				<div id="example1"></div>
+				<!-- <div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT" id="recaptchaRegistrar"></div> -->
+				<div id="recaptchaRegistrar"></div>
 
 				<button type="submit" class="btn btn-primary">Registrarme</button>
 			</form>
@@ -85,6 +152,8 @@
 				</div>
 				<div id="recapcha-inicio-sesion">
 
+					<div id="recaptchaSesion"></div>
+					<div id="example3"></div>
 					<!-- <div class="g-recaptcha" data-sitekey="6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT" id="recaptchaSesion"></div> -->
 				</div>
 
@@ -99,6 +168,39 @@
 			</form>
 		</div>
 	</div>
+
+
+	<!-- <html>
+	</head>
+
+	<body>
+		//The g-recaptcha-response string displays in an alert message upon submit.
+		 -->
+	<form action="javascript:alert(grecaptcha.getResponse(widgetId1));">
+		<br>
+		<input type="submit" value="getResponse">
+	</form>
+	<br>
+	<!-- // Resets reCAPTCHA widgetId2 upon submit. -->
+	<form action="javascript:alert(grecaptcha.getResponse(widgetId1));">
+		<div id="example2"></div>
+		<br>
+		<input type="submit" value="reset">
+	</form>
+	<br>
+	<!-- // POSTs back to the page's URL upon submit with a g-recaptcha-response POST parameter. -->
+	<form action="?" method="POST">
+
+		<br>
+		<input type="submit" value="Submit">
+	</form>
+	<!-- 
+		// <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer>
+		</script>
+	</body>
+
+	</html> -->
+
 	<script>
 		// variable que guarda el codigo del avatar
 		var avatarCode = "";
@@ -108,16 +210,11 @@
 		// $(document).ready(function() {
 		document.getElementById("formulario-registrar").addEventListener("submit", function(e) { //evento submit
 			e.preventDefault(); //para que no se abra el archivo php
-			var response = grecaptcha.getResponse();
-			if (response.length == 0) {
-				alert("please verify you are humann!!");
-				e.preventDefault();
+			
+			if (grecaptcha.getResponse(widgetId1).length == 0) {
+				alert("please verify you are humann!");
 				return false;
 			}
-			// let avatar;
-			// if (avatarCode == "") {
-			// 	avatar = "< ?= $this->session->sesion_sistema_administrativo['avatar']; ?>";
-			// } else
 			data = {
 				nombres: document.getElementById("nombres").value,
 				apellidos: document.getElementById("apellidos").value,
@@ -193,28 +290,12 @@
 		 */
 		// $(document).ready(function() {
 		document.getElementById("formulario-sesion").addEventListener("submit", function(e) {
-			// $('#formulario-sesion').on('submit', function(e) { //evento submit
+			if (grecaptcha.getResponse(widgetId3).length == 0) {
+				alert("please verify you are humann!");
+				e.preventDefault();
+				return false;
+			}
 			e.preventDefault();
-			// recaptcha1 = grecaptcha.render('recaptchaSesion', {
-			// 	'sitekey': '6Lcg1KgZAAAAAIwICpYfTzAATyeRrBDcPisOOviT', //Reemplazar esto por la Key de tu sitio
-			// 	'theme': 'light'
-			// });
-			// $(".g-recaptcha").each(function() {
-			// 	var object = $(this);
-			// 	let response = grecaptcha.render(object.attr("id"));
-			// 		if (response.length == 0) {
-			// 			alert("please verify you are humann!");
-			// 			e.preventDefault();
-			// 			return false;
-			// 		}
-			// 	});
-			// var response = recaptcha1.getResponse();
-
-			// if (response.length == 0) {
-			// 	alert("please verify you are humann!");
-			// 	e.preventDefault();
-			// 	return false;
-			// }
 			$.ajax({ //ajax jQuery
 				type: this.method, //metodo para enviar datos al servidor
 				url: this.action, //url del servidor "archivo php"
@@ -276,4 +357,8 @@
 
 		// document.getElementById("captcha-form-registrar").addEventListener("submit", function(evt) {});
 	</script>
+
+	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+	<!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+
 </div>
