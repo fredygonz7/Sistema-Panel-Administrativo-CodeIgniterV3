@@ -1,7 +1,6 @@
 <div class="d-flex justify-content-center">
 	<!-- script de reCaptcha -->
 	<script type="text/javascript">
-		
 		var verifyCallback = function(response) {
 			return response;
 		};
@@ -113,10 +112,10 @@
 	<script>
 		// variable que guarda el codigo del avatar
 		var avatarCode = "";
+		
 		/**
 		 * registrar usuario estandar
 		 */
-		// $(document).ready(function() {
 		document.getElementById("formulario-registrar").addEventListener("submit", function(e) { //evento submit
 			e.preventDefault(); //para que no se abra el archivo php
 
@@ -131,33 +130,29 @@
 				password: document.getElementById("passwordRegistrar").value,
 				avatar: avatarCode
 			};
-			// console.log("data", data);
-
 			if (document.getElementById("passwordRegistrar").value === document.getElementById("passwordConfirmRegistrar").value) {
-				$.ajax({ //ajax jQuery
-					type: this.method, //metodo para enviar datos al servidor
-					url: this.action, //url del servidor "archivo php"
-					//contentType : "text/x-json",//prueba para enviarlo como json
-					data, //enviando los datos del "formulario" al servidor
-					success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
-						// let objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
-						console.log(respuesta);
-						if (typeof respuesta === 'string') {
-							let objetoRespuesta = JSON.parse(respuesta);
-							if (objetoRespuesta.status) {
-								// console.log(objetoRespuesta.message);
-								mostrarMensajeCorreoEnviado();
-							} else
-								alert(objetoRespuesta.message)
-						} else
-							console.log("Error inesperado");
-					}
-				});
+				// realizar la peticion
+				petiones_ajax(this.method, this.action, data, respuestaRegistrar);
 			} else {
 				alert("las contraseñas no coinciden")
 			}
 		});
-		// });
+
+		/**
+		 * callback de la peticion ajax de registrar
+		 * funcion que controla la respuesta de peticion del formulario de registrar
+		 *
+		 * return void
+		 */
+		function respuestaRegistrar(objetoRespuesta) {
+			if (typeof objetoRespuesta === 'object') {
+				if (objetoRespuesta.status) {
+					mostrarMensajeCorreoEnviado();
+				} else
+					alert(objetoRespuesta.message)
+			} else
+				console.log("Error inesperado");
+		}
 
 		/**
 		 * Funcion encargada de moestrar el interfaz con mensaje de correo enviado y ocultar los demas
@@ -195,27 +190,26 @@
 				alert("Por favor, verifique que usted es humano!");
 				return false;
 			}
-			$.ajax({ //ajax jQuery
-				type: this.method, //metodo para enviar datos al servidor
-				url: this.action, //url del servidor "archivo php"
-				//contentType : "text/x-json",//prueba para enviarlo como json
-				data: $(this).serialize(), //enviando los datos del "formulario" al servidor
-				success: function(respuesta) { //recibiendo la respuesta del servidor, en caso de que todo este bien
-					//var objeto = JSON.parse(respuesta); //convirtiendo el JSON recibido a objeto JavaScript 
-					if (typeof respuesta === 'string') {
-						let objetoRespuesta = JSON.parse(respuesta);
-						if (objetoRespuesta.status) {
-							console.log(objetoRespuesta.message);
-							document.getElementById("formulario-sesion").reset();
-							location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
-							// setTimeout("location.href='< ?= base_url() ?>index.php/Panel_Administrativo/'", 1000);
-						} else
-							alert(objetoRespuesta.message)
-					} else
-						console.log("Error inesperado");
-				}
-			});
+			petiones_ajax(this.method, this.action, $(this).serialize(), respuestaInicioSesion);
 		});
+
+		/**
+		 * callback de la peticion ajax del inicio de sesion
+		 * funcion que controla la respuesta de peticion del formulario inicio de sesion
+		 *
+		 * return void
+		 */
+		function respuestaInicioSesion(objetoRespuesta) {
+			if (typeof objetoRespuesta === 'object') {
+				if (objetoRespuesta.status) {
+					console.log(objetoRespuesta.message);
+					document.getElementById("formulario-sesion").reset();
+					location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
+				} else
+					alert(objetoRespuesta.message)
+			} else
+				console.log("Error inesperado");
+		}
 
 		/**
 		 * Funcion encargada de mostrar el formulario de registrar y ocultar los otros
@@ -237,7 +231,6 @@
 		 * @return void
 		 */
 		function encodeImageFileAsURL(id) {
-			// return "1";
 			let filesSelected = document.getElementById(id).files;
 			if (filesSelected.length > 0) {
 				let fileToLoad = filesSelected[0];

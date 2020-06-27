@@ -29,9 +29,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- AJAX -->
     <script>
-        // no usada
-        // funcion general para peticiones ajax
-        function ajax(type, url, data, callback) {
+        /**
+         * funcion general para peticiones ajax
+         *
+         * return void
+         */
+        function petiones_ajax(type, url, data, callback) {
             $.ajax({ //ajax jQuery
                 type,
                 url,
@@ -41,14 +44,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     if (typeof respuesta === 'string') {
                         let objetoRespuesta = JSON.parse(respuesta);
                         if (objetoRespuesta.status) {
-                            callback(objetoRespuesta);
                             console.log("ajax", objetoRespuesta.message);
-                            // document.getElementById("formulario-editar-perfil").reset();
-                            // location.href = '< ?= base_url() ?>index.php/Panel_Administrativo/';
+                            callback(objetoRespuesta);
                         } else
                             alert(objetoRespuesta.message)
-                    } else
+                    } else {
                         console.log("Error inesperado");
+                        // respuestaInesperada = {
+                        //     message: "Datos inesperados del servidor",
+                        //     status: 0
+                        // };
+                        // callback(respuestaInesperada);
+
+                    }
                 }
             });
         }
