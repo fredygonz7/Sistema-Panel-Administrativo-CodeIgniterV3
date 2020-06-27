@@ -773,7 +773,7 @@
                     let objetoRespuesta = JSON.parse(respuesta);
                     if (objetoRespuesta.status) {
                         callback(objetoRespuesta);
-                        // console.log(objetoRespuesta.message);
+                        console.log("ajax",objetoRespuesta.message);
                         // document.getElementById("formulario-editar-perfil").reset();
                         // location.href = '< ?= base_url() ?>index.php/Panel_Administrativo/';
                     } else
@@ -784,26 +784,3 @@
         });
     }
 </script>
-
-
-<!-- <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <style type="text/css">
-        body {
-            font-family: Helvetica Neue, Helvetica, Lucida Grande, tahoma, verdana, arialsans-serif;
-            font-size: 16px;
-            line-height: 21px;
-            color: #141823;
-        }
-    </style>
-</head>
-<body>
-    <p>Hola</p>
-    <p>Para activar la cuenta ingrese al siguiente link</p>
-    <a href="https://sistema-panel-administrativo.test/index.php/Panel_Administrativo/activarUsuario?email=fredy@gmail">https://sistema-panel-administrativo.test</a>
-    <p style="margin-top: 15px";>Despues podra inicias sesion</p>
-</body>
-</html> -->

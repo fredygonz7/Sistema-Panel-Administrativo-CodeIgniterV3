@@ -27,6 +27,32 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <!-- <script type="text/javascript" src="< ?=base_url() ?>js/librerias/clajson.js"></script> -->
     <!-- reCAPTCHA  -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- AJAX -->
+    <script>
+        // no usada
+        // funcion general para peticiones ajax
+        function ajax(type, url, data, callback) {
+            $.ajax({ //ajax jQuery
+                type,
+                url,
+                data,
+                success: function(respuesta) {
+                    // console.log(respuesta);
+                    if (typeof respuesta === 'string') {
+                        let objetoRespuesta = JSON.parse(respuesta);
+                        if (objetoRespuesta.status) {
+                            callback(objetoRespuesta);
+                            console.log("ajax", objetoRespuesta.message);
+                            // document.getElementById("formulario-editar-perfil").reset();
+                            // location.href = '< ?= base_url() ?>index.php/Panel_Administrativo/';
+                        } else
+                            alert(objetoRespuesta.message)
+                    } else
+                        console.log("Error inesperado");
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
