@@ -444,7 +444,12 @@ class Panel_Administrativo extends CI_Controller
         // die();
         //Enviamos el email y si se produce bien o mal que avise con una flasdata
         if ($this->email->send()) {
-            header("Location: " . base_url());
+            // header("Location: " . base_url());
+            echo "<script>
+                	alert('Correo enviado');
+                    window.location= 'https://sistema-panel-administrativo.test/';
+                    // administrarUsuarios();
+				</script>";
             // return (json_encode([
             //     "message"       =>  "Correo enviado",
             //     "status"        =>  1,
@@ -452,7 +457,12 @@ class Panel_Administrativo extends CI_Controller
             //     "description"   =>  $asunto
             // ]));
         } else {
-            header("Location: " . base_url());
+            echo "<script>
+                	alert('Correo no enviado');
+                    window.location= 'https://sistema-panel-administrativo.test/';
+                    // administrarUsuarios();
+				</script>";
+            // header("Location: " . base_url());
             // return (json_encode([
             //     "message"       =>  "Correo no enviado",
             //     "status"        =>  0,
@@ -460,7 +470,7 @@ class Panel_Administrativo extends CI_Controller
             //     "description"   =>  $asunto
             // ]));
         }
-
+        die();
         header("Location: " . base_url());
     }
 
