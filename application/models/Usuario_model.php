@@ -220,7 +220,7 @@ class Usuario_model extends CI_Model
      * @param string $description   detalles de la respuesta    
      * @return JSON
      */
-    function mensaje($message, $status = 1, $data = null, $description = "")
+    function mensaje($message, $status = 0, $data = null, $description = "")
     {
         return (json_encode([
             "message"       =>  $message,
