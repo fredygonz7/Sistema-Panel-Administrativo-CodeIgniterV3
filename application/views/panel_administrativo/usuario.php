@@ -30,8 +30,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <form method="post" action="<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses" id="formulario-intereses" onchange="editarIntereses()">
-
+                <form method="post" id="formulario-intereses" onchange="editarIntereses()">
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
@@ -286,38 +285,35 @@
             else
                 document.getElementById(arrayNombreInteres[index]).checked = false;
         }
-        console.log(respuesInteresesUsuario.data);
     }
-    // console.log(respuesInteresesUsuario);
+
     /**
      * cierra la sesion
      *
      * @return void
      */
-
     function cerrarSesion() {
         if (confirm("Cerrar sesion ")) {
             $(document).ready(function() {
-                $.ajax({ //ajax jQuery
-                    type: "get",
-                    url: '<?= base_url() ?>index.php/Panel_Administrativo/cerrarSesion',
-                    data: "",
-                    success: function(respuesta) {
-                        // console.log("respuesta", respuesta);
-
-                        if (typeof respuesta === 'string') {
-                            let objetoRespuesta = JSON.parse(respuesta);
-                            if (objetoRespuesta.status) {
-                                // console.log(objetoRespuesta.message);
-                                setTimeout("location.href='<?= base_url() ?>'", 1000);
-                            } else
-                                alert(objetoRespuesta.message)
-                        } else
-                            console.log("Error inesperado");
-                    }
-                });
+                petiones_ajax("get", '<?= base_url() ?>index.php/Panel_Administrativo/cerrarSesion', "", respuestaCerrarSesion);
             });
         }
+    }
+
+    /**
+     * callback de la peticion ajax de CerrarSesion
+     * funcion que controla la respuesta de peticion de CerrarSesion
+     *
+     * return void
+     */
+    function respuestaCerrarSesion(objetoRespuesta) {
+        if (typeof objetoRespuesta === 'object') {
+            if (objetoRespuesta.status) {
+                setTimeout("location.href='<?= base_url() ?>'", 1000);
+            } else
+                alert(objetoRespuesta.message)
+        } else
+            console.log("Error inesperado");
     }
 
     // avatarCode - almacena la imagen en formato texto base64
@@ -355,50 +351,26 @@
                     password,
                     avatar
                 };
-                // console.log(data);
-
-                $.ajax({ //ajax jQuery
-                    type: this.method,
-                    url: this.action,
-                    data,
-                    success: function(respuesta) {
-                        // console.log(respuesta);
-                        if (typeof respuesta === 'string') {
-                            let objetoRespuesta = JSON.parse(respuesta);
-                            if (objetoRespuesta.status) {
-                                console.log(objetoRespuesta.message);
-                                document.getElementById("formulario-editar-perfil").reset();
-                                location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
-                            } else
-                                alert(objetoRespuesta.message)
-                        } else
-                            console.log("Error inesperado");
-                    }
-                });
+                petiones_ajax(this.method, this.action, data, respuestaEditarPerfil);
             }
         });
     });
 
     /**
-     * Codifica la imagen a texto base64
-     * 
-     * @param string id
-     * @return void
+     * callback de la peticion ajax de EditarPerfil
+     * funcion que controla la respuesta de peticion de EditarPerfil
+     *
+     * return void
      */
-    function encodeImageFileAsURL(id) {
-        // return "1";
-        let filesSelected = document.getElementById(id).files;
-        if (filesSelected.length > 0) {
-            let fileToLoad = filesSelected[0];
-
-            let fileReader = new FileReader();
-
-            fileReader.onload = function(fileLoadedEvent) {
-                srcData = fileLoadedEvent.target.result; // <--- data: base64
-                avatarCode = srcData;
-            }
-            fileReader.readAsDataURL(fileToLoad);
-        }
+    function respuestaEditarPerfil(objetoRespuesta) {
+        if (typeof objetoRespuesta === 'object') {
+            if (objetoRespuesta.status) {
+                document.getElementById("formulario-editar-perfil").reset();
+                location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
+            } else
+                alert(objetoRespuesta.message)
+        } else
+            console.log("Error inesperado");
     }
 
     /**
@@ -409,8 +381,6 @@
     function mostrarDatosFormularioEditar() {
         document.getElementById("nombresEditarPerfil").value = "<?= $this->session->sesion_sistema_administrativo['nombres']; ?>";
         document.getElementById("apellidosEditarPerfil").value = "<?= $this->session->sesion_sistema_administrativo['apellidos']; ?>";
-        // let avatar = "< ?= $this->session->sesion_sistema_administrativo['avatar']; ?>";
-        // document.getElementById("avatarEditarPerfil").src = "";
     }
 
     /**
@@ -421,27 +391,26 @@
      */
     function administrarUsuarios() {
         $(document).ready(function() {
-            $.ajax({
-                type: "get",
-                url: '<?= base_url() ?>index.php/Panel_Administrativo/obtenerUsuarios',
-                data: "",
-                success: function(respuesta) {
-                    // console.log("respuesta", respuesta);
-                    if (typeof respuesta === 'string') {
-                        let objetoRespuesta = JSON.parse(respuesta);
-                        if (objetoRespuesta.status) {
-                            // console.log(objetoRespuesta.message);
-                            mostrarDatosDeAdministrarUsuarios(objetoRespuesta.data);
-                            document.getElementById("div-perfil-usuario").style.display = "none";
-                            document.getElementById("div-administrar-usuario").style.display = "block";
-                            // setTimeout("location.href='< ?= base_url() ?>'", 1000);
-                        } else
-                            alert(objetoRespuesta.message)
-                    } else
-                        console.log("Error inesperado");
-                }
-            });
+            petiones_ajax("get", '<?= base_url() ?>index.php/Panel_Administrativo/obtenerUsuarios', "", respuestaAdministrarUsuarios);
         });
+    }
+
+    /**
+     * callback de la peticion ajax de AdministrarUsuarios 
+     * funcion que controla la respuesta de peticion de AdministrarUsuarios 
+     *
+     * return void
+     */
+    function respuestaAdministrarUsuarios(objetoRespuesta) {
+        if (typeof objetoRespuesta === 'object') {
+            if (objetoRespuesta.status) {
+                mostrarDatosDeAdministrarUsuarios(objetoRespuesta.data);
+                document.getElementById("div-perfil-usuario").style.display = "none";
+                document.getElementById("div-administrar-usuario").style.display = "block";
+            } else
+                alert(objetoRespuesta.message)
+        } else
+            console.log("Error inesperado");
     }
 
     /**
@@ -451,7 +420,6 @@
      * @return void
      */
     function mostrarDatosDeAdministrarUsuarios(objetoUsuarios) {
-        // console.log(objetoUsuarios);
         if (typeof objetoUsuarios == 'object') {
             let tbody = document.getElementById("tbody-administrar-usuario");
             while (tbody.hasChildNodes()) {
@@ -542,7 +510,6 @@
      * @return void
      */
     function descargarPerfil(email) {
-        console.log("descargarPerfilPropio", email);
         location.href = '<?= base_url() ?>index.php/Panel_Administrativo/GenerarPDF?email=' + email;
         // let data = {
         //     email
@@ -561,7 +528,6 @@
      * @return void
      */
     function enviarEmailUsuario(email) {
-        console.log("enviarEmailUsuario", email);
         location.href = '<?= base_url() ?>index.php/Panel_Administrativo/EnviarPDF?email=' + email;
         // let data = {
         //     email
@@ -581,7 +547,6 @@
      * @return void
      */
     function editarUsuario_Admin(datos) {
-        console.log("editarUsuario_Admin", datos);
         let formulario = document.getElementById("formulario-editar-usuario");
         formulario.reset();
         document.getElementById("editarUsuarioModalLabel").innerHTML = "Editar Usuario";
@@ -605,7 +570,6 @@
      * @return void
      */
     function crearUsuario_Admin() {
-        console.log("crearUsuario_Admin");
         let formulario = document.getElementById("formulario-editar-usuario");
         formulario.reset();
         document.getElementById("editarUsuarioModalLabel").innerHTML = "Crear Usuario";
@@ -628,7 +592,6 @@
     $(document).ready(function() {
         $('#formulario-editar-usuario').on('submit', function(e) {
             e.preventDefault();
-            console.log("formulario-editar-usuario");
 
             let password = "";
             if ((document.getElementById("passwordEditarUsuario").value) != (document.getElementById("passwordConfirmEditarUsuario").value)) {
@@ -652,30 +615,28 @@
                     perfil: (document.getElementById("perfilEditarUsuario").checked ? "admin" : "usuario")
                     // ,accion: document.getElementById("editarUsuarioModalLabel").innerHTML
                 };
-                console.log(data);
-
-                $.ajax({ //ajax jQuery
-                    type: this.method,
-                    url: this.action,
-                    data,
-                    success: function(respuesta) {
-                        // console.log(respuesta);
-                        if (typeof respuesta === 'string') {
-                            let objetoRespuesta = JSON.parse(respuesta);
-                            if (objetoRespuesta.status) {
-                                console.log(objetoRespuesta.message);
-                                document.getElementById("formulario-editar-usuario").reset();
-                                $('#editarUsuarioModal').modal('hide');
-                                administrarUsuarios();
-                            } else
-                                alert(objetoRespuesta.message)
-                        } else
-                            console.log("Error inesperado");
-                    }
-                });
+                petiones_ajax(this.method, this.action, data, respuestaFormularioEditarUsuario);
             }
         });
     });
+
+    /**
+     * callback de la peticion ajax de FormularioEditarUsuario 
+     * funcion que controla la respuesta de peticion de FormularioEditarUsuario 
+     *
+     * return void
+     */
+    function respuestaFormularioEditarUsuario(objetoRespuesta) {
+        if (typeof objetoRespuesta === 'object') {
+            if (objetoRespuesta.status) {
+                document.getElementById("formulario-editar-usuario").reset();
+                $('#editarUsuarioModal').modal('hide');
+                administrarUsuarios();
+            } else
+                alert(objetoRespuesta.message)
+        } else
+            console.log("Error inesperado");
+    }
 
     /**
      * Eliminar un usuario,  la session del sistema
@@ -688,24 +649,24 @@
             data = {
                 email: datos.email,
             };
-            $.ajax({
-                type: "post",
-                url: '<?= base_url() ?>index.php/Panel_Administrativo/eliminarUsuario',
-                data,
-                success: function(respuesta) {
-                    console.log(respuesta);
-                    if (typeof respuesta === 'string') {
-                        let objetoRespuesta = JSON.parse(respuesta);
-                        if (objetoRespuesta.status) {
-                            console.log(objetoRespuesta.message);
-                            administrarUsuarios();
-                        } else
-                            alert(objetoRespuesta.message)
-                    } else
-                        console.log("Error inesperado");
-                }
-            });
+            petiones_ajax('post', '<?= base_url() ?>index.php/Panel_Administrativo/eliminarUsuario', data, respuestaEliminarUsuario_Admin);
         }
+    }
+
+    /**
+     * callback de la peticion ajax de EliminarUsuario_Admin
+     * funcion que controla la respuesta de peticion de EliminarUsuario_Admin
+     *
+     * return void
+     */
+    function respuestaEliminarUsuario_Admin(objetoRespuesta) {
+        if (typeof objetoRespuesta === 'object') {
+            if (objetoRespuesta.status) {
+                administrarUsuarios();
+            } else
+                alert(objetoRespuesta.message)
+        } else
+            console.log("Error inesperado");
     }
 
 
@@ -718,7 +679,6 @@
     //     $('#formulario-intereses').on('submit', function(e) {
     //         e.preventDefault();
     function editarIntereses() {
-        // console.log("formulario-editar-intereses");
         let arrayNombreInteres = ["gastronomia", "deportes", "desarrolo_web", "desarrollo_movil", "politica", "cine",
             "esoterismo", "hogar_y_moda", "psicologia"
         ];
@@ -734,53 +694,29 @@
             } else
                 objetoIntereses[arrayNombreInteres[index]] = "false";
         }
-        // console.log("objetoIntereses", objetoIntereses);
         if (contadorIntereses > 4) {
             alert("Se deben seleccionar maximo cuatro intereses");
             window.location = '<?= base_url() ?>index.php/Panel_Administrativo/';
         } else {
             objetoIntereses["email"] = "<?= $this->session->sesion_sistema_administrativo['email']; ?>";
-            // console.log("objetoIntereses", objetoIntereses);
-            $.ajax({ //ajax jQuery
-                type: "post",
-                url: "<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses",
-                data: objetoIntereses,
-                success: function(respuesta) {
-                    if (typeof respuesta === 'string') {
-                        let objetoRespuesta = JSON.parse(respuesta);
-                        if (objetoRespuesta.status) {
-                            console.log(objetoRespuesta.message);
-                        } else {
-                            alert(objetoRespuesta.message);
-                            // window.location = '<?= base_url() ?>index.php/Panel_Administrativo/';
-                        }
-                    } else
-                        console.log("Error inesperado");
-                }
-            });
+            // ejecutar peticion
+            petiones_ajax("post", "<?= base_url() ?>index.php/Panel_Administrativo/editarIntereses", objetoIntereses, respuestaEditarIntereses);
         }
     }
 
-    // no usada
-    function ajax(type, url, data, callback) {
-        $.ajax({ //ajax jQuery
-            type,
-            url,
-            data,
-            success: function(respuesta) {
-                // console.log(respuesta);
-                if (typeof respuesta === 'string') {
-                    let objetoRespuesta = JSON.parse(respuesta);
-                    if (objetoRespuesta.status) {
-                        callback(objetoRespuesta);
-                        console.log("ajax",objetoRespuesta.message);
-                        // document.getElementById("formulario-editar-perfil").reset();
-                        // location.href = '< ?= base_url() ?>index.php/Panel_Administrativo/';
-                    } else
-                        alert(objetoRespuesta.message)
-                } else
-                    console.log("Error inesperado");
-            }
-        });
+    /**
+     * callback de la peticion ajax de EditarIntereses
+     * funcion que controla la respuesta de peticion de EditarIntereses
+     *
+     * return void
+     */
+    function respuestaEditarIntereses(objetoRespuesta) {
+        if (typeof objetoRespuesta === 'object') {
+            if (objetoRespuesta.status) {
+
+            } else
+                alert(objetoRespuesta.message)
+        } else
+            console.log("Error inesperado");
     }
 </script>
