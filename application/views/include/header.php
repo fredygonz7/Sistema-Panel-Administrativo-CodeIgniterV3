@@ -60,6 +60,28 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 }
             });
         }
+        
+        /**
+         * Codifica la imagen a texto base64
+         * 
+         * @param string id
+         * @return void
+         */
+        function encodeImageFileAsURL(id) {
+            // return "1";
+            let filesSelected = document.getElementById(id).files;
+            if (filesSelected.length > 0) {
+                let fileToLoad = filesSelected[0];
+
+                let fileReader = new FileReader();
+
+                fileReader.onload = function(fileLoadedEvent) {
+                    srcData = fileLoadedEvent.target.result; // <--- data: base64
+                    avatarCode = srcData;
+                }
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        }
     </script>
 </head>
 

@@ -202,7 +202,7 @@
 		function respuestaInicioSesion(objetoRespuesta) {
 			if (typeof objetoRespuesta === 'object') {
 				if (objetoRespuesta.status) {
-					console.log(objetoRespuesta.message);
+					// console.log(objetoRespuesta.message);
 					document.getElementById("formulario-sesion").reset();
 					location.href = '<?= base_url() ?>index.php/Panel_Administrativo/';
 				} else
@@ -223,27 +223,7 @@
 			document.getElementById("formulario-registrar").reset();
 			document.getElementById("formulario-sesion").reset();
 		}
-
-		/**
-		 * Codifica la imagen a texto base64
-		 * 
-		 * @param string id
-		 * @return void
-		 */
-		function encodeImageFileAsURL(id) {
-			let filesSelected = document.getElementById(id).files;
-			if (filesSelected.length > 0) {
-				let fileToLoad = filesSelected[0];
-
-				let fileReader = new FileReader();
-
-				fileReader.onload = function(fileLoadedEvent) {
-					srcData = fileLoadedEvent.target.result; // <--- data: base64
-					avatarCode = srcData;
-				}
-				fileReader.readAsDataURL(fileToLoad);
-			}
-		}
+		
 	</script>
 
 	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
